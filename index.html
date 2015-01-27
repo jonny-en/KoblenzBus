@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+
+    <meta charset="utf-8">
+    <title>KoblenzBus</title>
+
+    <!-- Import Css -->
+    <link rel="stylesheet" href="css/tabs.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/route.css">
+    <link rel="stylesheet" href="css/routeAdd.css" />
+    <link rel="stylesheet" href="css/routeEdit.css" />
+    <link rel="stylesheet" href="leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/map.css" />
+    <link rel="stylesheet" href="css/input_areas.css" />
+    <link rel="stylesheet" href="css/date.css">
+
+
+    <!--Load js libs -->
+    <script type="text/javascript" src="js/libs/jquery-1.11.2.min.js">
+    </script>
+    <script type="text/javascript" src="js/app.js" defer></script>
+
+    <!-- Google Font Fira Sans -->
+    <link href='http://fonts.googleapis.com/crouteamily=Fira+Sans' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+    <!-- Start Content-->
+    <div id="route_view" class="view" style="display:block;">
+    </div>
+    
+     <div id="routeAdd_view" class="view" style="display:none;">  
+     </div>
+
+     <div id="routeEdit_view" class="view" style="display:none;">  
+     </div>
+
+
+    <div id="map_view" class="view" style="display:none;">
+    </div>
+
+    <div id="date_view" class="view" style="display:none;">
+    </div>
+
+    <!-- End Content-->
+
+        <!-- Navigation -  -->
+        <div id="navigation">
+            <ul role="tablist">
+                <li id="panel1"  role="presentation" aria-selected="true">
+                    <a id="tab1" role="tab" aria-controls="tabpanel1">
+                        <img src="img/icons/navi/route.png" />
+                    </a>
+                
+                </li><li id="panel2"role="presentation" aria-selected="false">
+                    <a id="tab2" role="tab" aria-controls="tabpanel2">
+                        <img src="img/icons/navi/map.png" />
+                    </a>
+                </li><li id="panel3" role="presentation" aria-selected="false">
+                    <a id="tabDate" role="tab" aria-controls="tabpanel3">
+                        <img src="img/icons/navi/clock.png" />
+                </a>
+              	</li>
+            </ul>
+        </div>
+        <!-- //END Navigation -->
+
+    
+	<!-- Load Scripts -->
+     <script src="js/index.js"></script>
+
+</body>
+
+</html>

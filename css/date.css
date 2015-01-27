@@ -1,0 +1,23 @@
+#contentDate {
+  position: absolute;
+	margin-top: 5rem;
+  height: 100%;
+  width: 100%;
+  background-color: #EAEAE7;
+}
+
+li {
+	list-style-type: none;
+	margin-right: 5rem;
+}
+
+li h2 {
+	font-size: 2rem;
+	color: #FF4E00;
+}
+
+input[type="submit"] {
+	height: 4rem;
+}
+
+

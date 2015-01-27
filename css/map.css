@@ -1,0 +1,47 @@
+
+
+#map {
+	height: 100%;
+}
+
+#slideup {
+	background-color: black;
+	height: 200px;
+	width: 100%;
+	bottom: 45px;
+	position: fixed;
+	margin: 0;
+	display: none;
+
+
+}
+
+.slideActive {
+	bottom: 45px;
+	transition: 1s;
+}
+
+
+#settings {
+	position: absolute;
+	width: 4em;
+	height: 4em;
+	background-color: rgba(255, 255, 255, 0.0);
+	right:1em;
+	top: 1em;
+	text-align: center;
+}
+
+#settings > a {
+	text-decoration: none;
+	color: #000000;
+}
+
+#settings > a:hover {
+	color: #00AACC;
+}
+
+
+
+
+
