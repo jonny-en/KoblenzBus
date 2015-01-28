@@ -9,6 +9,10 @@ $(document).ready(function() {
         param: "routeEdit_view"
     }, showView);
 
+		$("#settingsbtn-route").click({
+				param: "settings_view"
+		}, showView);
+
 
 
     $("#fav-left button").click(function() {

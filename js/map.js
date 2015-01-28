@@ -1,5 +1,13 @@
+$(document).ready(function(){
+	
+	$("#settingsbtn-map").click({
+		param: 'settings_view'
+	}, showView);
 
+});
 window.onload = function(){
+
+
 
 var map = L.map('map');
 

@@ -5,6 +5,7 @@ $(document).ready(function() {
     $("#date_view").load("../date.html");
     $("#routeAdd_view").load("../routeAdd.html");
     $("#routeEdit_view").load("../routeEdit.html");
+		$("#settings_view").load("../settings.html");
 
 
     //Start Navi
