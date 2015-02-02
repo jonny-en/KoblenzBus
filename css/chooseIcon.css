@@ -1,0 +1,33 @@
+#contentChooseIcon {
+  position: absolute;
+	margin-top: 3rem;
+  height: 100%;
+  width: 100%;
+  background-color: #2C393B;
+	overflow: auto;
+}
+
+#center {
+width: 75%;
+margin-left: auto;
+margin-right: auto;
+}
+.iconDiv {
+	position: relative;
+	display: inline-block;
+	height: 10rem;
+	width: 10rem;
+	background-color: #FFFFFF;
+	border-radius: 100%;
+	margin-left: 1rem;
+	margin-top: 1rem;
+	text-align: center;
+	
+}
+
+.iconDiv img {
+	height: 8rem;
+	width: 8rem;
+	margin-top: 1.5rem;
+	fill: #EAEAE7;
+

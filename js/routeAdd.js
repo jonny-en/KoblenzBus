@@ -20,6 +20,9 @@ $(document).ready(function(){
    $("#backbtnAdd").click({
         param: 'route_view'
     }, showView);
-
+	
+	 $("#changeIconAdd").click({
+				param: 'chooseIcon_view'
+		},showView);
     
 });
