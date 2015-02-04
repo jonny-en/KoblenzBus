@@ -103,20 +103,12 @@
   margin-left: 1rem;
   margin-right: 1rem;
 }
-#addbtn{
-  position: absolute;
-  margin-top: 32rem;
-  width: 100%;
-  height: 4.05rem;
-  font-size: 3rem;
-  background-color: rgba(95,155,10,0.7);
-  text-align: center;
-}
 
 #addbtn a{
   color: #5F9B0A;
   text-decoration: none;
   outline: 0;
+	font-size: 40px;
 }
 
 #addbtn a:hover{
@@ -128,4 +120,14 @@
   width: 100%;
   bottom: 0;
   left: 0;
+}
+
+#addbtn {
+    position: fixed;
+    bottom: 45px;
+    width: 100%;
+    height: 50px;
+    background: rgba(122, 201, 89, 0.6) center 7px no-repeat;
+    text-align: center;
+    cursor: pointer;
 }

@@ -1,7 +1,5 @@
-
 <script type="text/javascript" src="js/routeEdit.js">
 </script>
-
 <header>
     <menu type="toolbar">
     </menu>
@@ -19,7 +17,7 @@
     <p>Name des Ortes</p>
     <form>
         <p>
-            <input type="text" placeholder="Namen eingeben" />
+            <input id="name-edit" type="text" placeholder="Namen eingeben" />
             <button type="reset">Clear</button>
         </p>
     </form>
@@ -32,21 +30,10 @@
     <div id="busstops">
         <fieldset>
             <p>Zugehörige Haltestellen</p>
-            <div>
-                <legend class="action">UNI-Metternich</legend>
-                <a href="#">
-                    <div class="delete"><span></span>
-                    </div>
-                </a>
-            </div>
-            <div>
-                <legend class="action">Winninger Straße</legend>
-                <a href="#">
-                    <div class="delete"><span></span>
-                    </div>
-                </a>
-            </div>
-            <button>Haltestelle hinzufügen</button>
+							<div id="busstops-edit">
+           			
+							</div>
+            <button id="savebtn-edit">Bestätigen</button>
         </fieldset>
     </div>
 

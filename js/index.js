@@ -1,5 +1,6 @@
 $(document).ready(function() {
     //preload all views
+		$("#routeEdit_view").load("../routeEdit.html");
     $("#route_view").load("../route.html");
     $("#map_view").load("../map.html");
     $("#date_view").load("../date.html");
@@ -44,6 +45,8 @@ $(document).ready(function() {
 
     });
     //End Navi design
+
+		localforage.setItem("index",-1,function(err){});
 });
 
 //Change View. 

@@ -49,7 +49,7 @@
   overflow: auto;
 }
 
-#busstops legend {
+#busstops-edit legend {
   background-color: #fff;
   float:left;
   width:80%;
