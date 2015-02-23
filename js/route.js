@@ -63,8 +63,7 @@ $(document).ready(function() {
 				localforage.getItem("favList",function(err,value){
 					value[index].reference = $('#name-edit').val();
 					value[index].icon = "heart";
-					localforage.setItem("favList",value,function(err){});
-					location.reload();
+					localforage.setItem("favList",value,function(err){location.reload();});
 				});
 			}
 		});

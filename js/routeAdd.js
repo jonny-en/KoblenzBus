@@ -42,8 +42,7 @@ $(document).ready(function(){
 					if(favList === null){
 						favList = [];
 						favList.push(obj);
-						localforage.setItem("favList",favList,function(err){});
-						$("#route_view").load("../route.html");
+						localforage.setItem("favList",favList,function(err){location.reload();});
 					}else{
 						var contains = false;
 						for(var i = 0;i < favList.length; i++){
@@ -53,8 +52,7 @@ $(document).ready(function(){
 						}
 						if(!contains){
 							favList.push(obj);
-							localforage.setItem("favList",favList,function(err){});
-							location.reload();
+							localforage.setItem("favList",favList,function(err){location.reload();});
 						}
 					}		
 				});
