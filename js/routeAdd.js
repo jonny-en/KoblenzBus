@@ -43,7 +43,7 @@ $(document).ready(function(){
 						favList = [];
 						favList.push(obj);
 						localforage.setItem("favList",favList,function(err){});
-						$("#route_view").load("../route.html");
+						location.reload();
 					}else{
 						var contains = false;
 						for(var i = 0;i < favList.length; i++){
