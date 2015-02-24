@@ -11,19 +11,19 @@
     <h1>Termin</h1>
 </header>
 <div id="contentDate">
-    <form>
         <ul>
             <li>
                 <h2>Uhrzeit</h2>
-                <input type="time" name="departure_time" placeholder="Tippen um die Abfahrtszeit einzugeben (hh:mm)"></input>
+                <input type="time" id="departure_time" placeholder="Tippen um die Abfahrtszeit einzugeben (hh:mm)"></input>
             </li>
             <li>
                 <h2>Datum</h2>
-                <input type="date" name="departure_date" placeholder="Tippen um die Abfahrtszeit einzugeben (dd.mm.yyyy)"></input>
+                <input type="date" id="departure_date" placeholder="Tippen um die Abfahrtszeit einzugeben (dd.mm.yyyy)"></input>
             </li>
             <li>
-                <input type="submit"></input>
+                <button id="setTime">Setze Zeitpunkt</button>
+								<button id="setNow">Aktuellen Zeitpunkt</button>
             </li>
-        </ul>
-    </form>
+        </ul>	
+
 </div>

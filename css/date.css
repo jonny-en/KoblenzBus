@@ -16,7 +16,7 @@ li h2 {
 	color: #FF4E00;
 }
 
-input[type="submit"] {
+#setTime,#setNow {
 	height: 4rem;
 }
 

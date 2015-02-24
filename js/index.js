@@ -46,7 +46,6 @@ $(document).ready(function() {
     });
     //End Navi design
 
-		localforage.setItem("index",-1,function(err){});
 });
 
 //Change View. 

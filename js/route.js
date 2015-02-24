@@ -63,8 +63,7 @@ $(document).ready(function() {
 				localforage.getItem("favList",function(err,value){
 					value[index].reference = $('#name-edit').val();
 					value[index].icon = "heart";
-					localforage.setItem("favList",value,function(err){});
-					location.reload();
+					localforage.setItem("favList",value,function(err){location.reload();});
 				});
 			}
 		});
@@ -92,7 +91,43 @@ $(document).ready(function() {
 				});
 			}
 		});
-
 		
+	$("#route-confirm").click(function(){ //Reset Liste
+		localforage.getItem("favList",function(err,value){		
+			var favoriteList = value;
+			var startName;
+			var destinationName;
+			$("#fav-left button").each(function(){
+					if($(this).hasClass('clicked')){
+						startName = $(this).parent().children('h3').html();
+					}		
+			});
 
+
+			$("#fav-right button").each(function(){
+					if($(this).hasClass('clicked')){
+						destinationName = $(this).parent().children('h3').html();
+					}		
+			});	
+
+			if(startName!=null && destinationName!=null && startName!=destinationName){
+				
+        for (var i=0; i<favoriteList.length;i++){
+          if (favoriteList[i].reference===startName){
+            var start = favoriteList[i];
+          }
+          if (favoriteList[i].reference===destinationName){
+            var destination = favoriteList[i]; 
+          }
+        }
+
+
+      	//Finde ausgewählte Elemente und baue daraus Anfragen
+      	var startQuery= start.stopname +" "+ start.town;
+      	var destinationQuery= destination.stopname +" "+destination.town;
+      	getData(startQuery,destinationQuery,null);
+
+      }
+ 	  });	//getTownNamesByPosition(testPosLat,testPosLon);
+ 	});
 });
