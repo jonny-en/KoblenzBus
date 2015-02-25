@@ -62,7 +62,7 @@ $(document).ready(function() {
 			if(index!=null){
 				localforage.getItem("favList",function(err,value){
 					value[index].reference = $('#name-edit').val();
-					value[index].icon = "heart";
+					value[index].icon = $("#icon").attr("name");
 					value[index].stopname = $('#busstop-edit').val();
 					localforage.setItem("favList",value,function(err){
 						index = null;
@@ -108,6 +108,7 @@ $(document).ready(function() {
 						}
 					}
 					$('#busstop-edit').val(value[index].stopname);
+					$('#icon-container').append('<div id="icon-edit" name="'+value[index].icon+'"><img src="img/icons/favs/'+value[index].icon+'.svg"></img></div>');
 				});
 			}
 		});

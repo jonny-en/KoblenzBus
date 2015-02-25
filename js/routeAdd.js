@@ -61,4 +61,31 @@ $(document).ready(function(){
 					
 		});
     
+	$("#changeIconEdit").click(function(){
+		$('.view').each(function(index) {
+    	if($(this).attr('id') == 'chooseIcon_view') {
+      	$(this).show();
+      }else {
+      	$(this).hide();
+      }
+		});
+		$(".iconDiv").click(function(event){
+			var icon = event.target.id;
+			if(icon!=""){
+				$("#icon-add").remove();
+				$("#icon-container").append('<div id="icon-add" name="'+icon+'"><img src="img/icons/favs/'+icon+'.svg"></img></div>');
+				
+				
+
+				$('.view').each(function(index) {
+    			if($(this).attr('id') == 'routeAdd_view') {
+      			$(this).show();
+      		}else {
+      			$(this).hide();
+      		}
+				});
+			}
+		});
+	});	
+
 });
