@@ -63,6 +63,7 @@ $(document).ready(function() {
 				localforage.getItem("favList",function(err,value){
 					value[index].reference = $('#name-edit').val();
 					value[index].icon = "heart";
+					value[index].stopname = $('#busstop-edit').val();
 					localforage.setItem("favList",value,function(err){location.reload();});
 				});
 			}
@@ -87,7 +88,7 @@ $(document).ready(function() {
 							index = i;
 						}
 					}
-					$('#busstops-edit').append("<div><legend class=\"action\">"+value[index].stopname+"</legend><a href=\"#\"><div class=\"delete\"><span></span></div></a></div>");
+					$('#busstop-edit').val(value[index].stopname);
 				});
 			}
 		});
