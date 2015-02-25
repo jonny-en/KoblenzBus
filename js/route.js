@@ -58,16 +58,35 @@ $(document).ready(function() {
 	// also it reloads the whole page, because else you can only add one favorite
 	// for some reason the click-event only works one time
 
-	$('#busstops').on('click','button',function(){
+	$('#savebtn-edit').on('click',function(){
 			if(index!=null){
 				localforage.getItem("favList",function(err,value){
 					value[index].reference = $('#name-edit').val();
 					value[index].icon = "heart";
 					value[index].stopname = $('#busstop-edit').val();
-					localforage.setItem("favList",value,function(err){location.reload();});
+					localforage.setItem("favList",value,function(err){
+						index = null;
+						location.reload();
+					});
 				});
 			}
 		});
+
+	$("#deletefavbtn").click(function(){
+		if(index!=null){
+			console.log("inif");
+			localforage.getItem("favList",function(err,value){
+				console.log(index);
+				console.log(value.length);
+				value.splice(index,1);
+				console.log(value.length);
+				localforage.setItem("favList",value,function(err){
+					index = null;
+					location.reload();
+				});	
+			});
+		}
+	});
 	
 	// find reference name of clicked button
 	// the referencename is unique because it gets checked before adding new favorites
