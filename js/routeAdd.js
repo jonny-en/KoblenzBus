@@ -28,7 +28,7 @@ $(document).ready(function(){
 
 	$("#trackLocation").click(function(){
 		console.log("Button pressed");
-		findRoutesByLocation();
+		findStops();
 	});
 
 		// for now you can only manually add favorites
@@ -99,7 +99,7 @@ $(document).ready(function(){
 //Globals 
 var range=200.0;
 
-function findRoutesByLocation(){
+function findStops(){
   //Normale Lösung
   /*
   if ("geolocation" in navigator) {
@@ -114,10 +114,10 @@ function findRoutesByLocation(){
   */
 
   //TEST Version
-  getTownNamesByPosition(50.3611643, 7.559261);
+  getStopAndTownByPosition(50.3611643, 7.559261);
 }
 
-function getTownNamesByPosition(latitude,longitude){
+function getStopAndTownByPosition(latitude,longitude){
   var request="[out:json];is_in("+latitude+","+longitude+");out;node(around:"+range+","+latitude+","+longitude+");out;"; // Alle Routen mit Haltestellen etc
   var query='http://overpass-api.de/api/interpreter?data='+request;
 
