@@ -8,10 +8,10 @@
     <title>KoblenzBus</title>
 
     <!-- Import Css -->
-    <link rel="stylesheet" href="css/tabs.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/route.css">
     <link rel="stylesheet" href="css/routeAdd.css" />
+    <link rel="stylesheet" href="css/stopSelection.css"/>
     <link rel="stylesheet" href="css/routeEdit.css" />
     <link rel="stylesheet" href="leaflet-0.7.3/leaflet.css" />
     <link rel="stylesheet" href="css/normalize.css" />
@@ -29,18 +29,22 @@
     <script type="text/javascript" src="js/libs/jquery-1.11.2.min.js">
     </script>
 		<script type="text/javascript" src="js/libs/localforage.js"></script>
-    <script type="text/javascript" src="js/app.js" defer></script>
 
 </head>
 
 <body>
 
     <!-- Start Content-->
+    
+
     <div id="route_view" class="view" style="display:block;">
     </div>
     
      <div id="routeAdd_view" class="view" style="display:none;">  
      </div>
+
+    <div id="stopSelection_view" class="view" style="display:none;">
+    </div>
 
      <div id="routeEdit_view" class="view" style="display:none;">  
      </div>
@@ -57,6 +61,9 @@
 
 		<div id="chooseIcon_view" class="view" style="display:none;">
 		</div>
+
+    
+        
 
     <!-- End Content-->
 
