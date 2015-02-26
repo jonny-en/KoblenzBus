@@ -2,7 +2,6 @@
 var terminationInterval = 1; // Anzahl der Tage bis die Daten im Storage ablaufen
 var relevantInterval = 30; //Zeitfenster in dem Routenanfragen interessant wären in Minuten (Alle Routen innerhalb von X Minuten am Zielort ankommen)
 var onlyFastest = false; //Schnellste Anfrage da nur Erste Route angefragt wird
-var range = 500.0;
 
 //GLOBAL (vom System geändert werden)
 var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
@@ -710,72 +709,6 @@ function storeInOverpassData(town, date, elements){
       
   }
 
-
-/* 
-Location -> Loc in Overpass Req -> filtern von Area -> nächste X Haltestellen -> Sende BahnReq
-[out:json];is_in(50.3611643,7.559261);out;node(around:100.0,50.3611643,7.559261);out;
-*/
-
-function findRoutesByLocation(){
-  if ("geolocation" in navigator) {
-  /* geolocation is available */
-  navigator.geolocation.getCurrentPosition(function(position) {
-    getTownNamesByPosition(position.coords.latitude, position.coords.longitude);
-  });
-  } else {
-  /* geolocation IS NOT available */
-  console.log("Sorry but your geolocation is not available!");
-  }
-}
-
-function getTownNamesByPosition(latitude,longitude){
-  var request="[out:json];is_in("+latitude+","+longitude+");out;node(around:"+range+","+latitude+","+longitude+");out;"; // Alle Routen mit Haltestellen etc
-  var query='http://overpass-api.de/api/interpreter?data='+request;
-
-  var x = new XMLHttpRequest();
-  x.open("GET", query);
-  x.onload = x.onerror = function(){
-      console.log("LOADING COMPLETE");
-      
-      var responseObject = JSON.parse(x.responseText);
-      var elements = responseObject.elements;
-      var town = null;
-      var busStops = [];
-      for (var i=0; i<elements.length; i++){
-        if (elements[i].type === "area"){
-          //console.log(JSON.stringify(elements[i].tags));
-          if (elements[i].tags['de:place']==="city"){
-            town = elements[i].tags.name;
-          }
-        }
-        if (elements[i].type==="node"){
-          if (elements[i].tags != null){
-            if((elements[i].tags.highway === "bus_stop")||(elements[i].tags.amenity === "bus_station")||(elements[i].tags.public_transport === "platform")){
-              if (busStops.indexOf(elements[i].tags.name)===-1){
-                busStops.push(elements[i].tags.name);
-              }
-            } 
-          }
-        }
-      }
-      if (town===null){
-        console.log("ERROR, STADT NICHT GEFUNDEN!");
-        return;
-      }
-      if (busStops === []){
-        console.log("NO BUSSTOPS IN YOUR AREA!");
-        return;
-      }
-
-      console.log(town);
-      console.log(JSON.stringify(busStops));
-      var testQuery = busStops[0]+", "+town;
-      console.log (testQuery);
-      getData(testQuery,"Hauptbahnhof, Koblenz", null);
-
-    };
-  x.send(); 
-}
 
 //Schritt 4 - verarbeite Daten 
 
