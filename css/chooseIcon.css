@@ -1,33 +1,31 @@
 #contentChooseIcon {
   position: absolute;
-	margin-top: 3rem;
+  margin-top: 5rem;
   height: 100%;
   width: 100%;
-  background-color: #2C393B;
-	overflow: auto;
+  overflow: auto;
 }
 
 #center {
 width: 75%;
 margin-left: auto;
 margin-right: auto;
+ text-align: center;
 }
 .iconDiv {
-	position: relative;
-	display: inline-block;
-	height: 10rem;
-	width: 10rem;
-	background-color: #FFFFFF;
-	border-radius: 100%;
-	margin-left: 1rem;
-	margin-top: 1rem;
-	text-align: center;
+	border-radius: 50%;
+    width: 72px;
+    height: 72px;
+    background: white;
+    border: none;
+    outline: none;
+    display: inline-block;
 	
 }
 
 .iconDiv img {
-	height: 8rem;
-	width: 8rem;
-	margin-top: 1.5rem;
-	fill: #EAEAE7;
+	width: 40px;
+    height: 40px;
+    margin-top: 15px;
+}
 
