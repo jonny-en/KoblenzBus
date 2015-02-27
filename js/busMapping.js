@@ -8,6 +8,7 @@ var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
 var overpassStops; // Speichert alle Bushaltestellen, getaggt mit name und datum
 var overpassRoutes; // Analog mit Routen
 var stopDescriptionList; //Nodes die in Start/Stop angezeigt werden mit verknüpften Daten
+var relevantRoutes;
 
 var overpassNodes;
 
@@ -22,6 +23,7 @@ var DataObserver=function (){ //Singleton um sicherzustellen das alle denselben 
 
     DataObserver.prototype.activeProcess=0;
     DataObserver.prototype.addProcess= function(){
+      console.log("Added Process");
       this.activeProcess++;
     }
     DataObserver.prototype.removeProcess= function(){
@@ -29,10 +31,14 @@ var DataObserver=function (){ //Singleton um sicherzustellen das alle denselben 
         console.log("pls add active processes first")
         return;
       }
+      console.log("Finished Process");
       this.activeProcess--;
       if (this.activeProcess===0){
-        console.log("Start processData");
-        processData();
+        localforage.setItem("routes",relevantRoutes,function(err){
+          console.log("Start processData");
+          processData();
+        })
+        
       }
     }
 }
@@ -58,10 +64,12 @@ function trim (str) {
 //ON BUTTON PRESS
 //Schritt 1: Anfrage an Bahn mit Start und Ziel
 function getData(start, finish, date){ // Finde mit aktuellem Datum wenn date==null, ansonsten verwende Date
+
       if (start==="" || finish===""){
         console.log("NO INPUT!");
         return;
       }
+      relevantRoutes=[];
       routeNumber=0;
       if(date===null){
         date=new Date();
@@ -211,11 +219,6 @@ function requestLinks(result){
         var parser=new DOMParser();
         var html = parser.parseFromString(result,"text/html");
 
-        for (var n=0; n<6; n++){ //clear localforage routes
-          var routeKey="route"+n;
-          localforage.removeItem(routeKey,function(err){});
-        }
-
         for (var i=0; i<5;i++){// Links in der Routen aus Tabelle lesen
             var times=html.getElementsByClassName('timelink').item(i).firstChild.innerHTML.split("<br>");// times[0]=startzeit; times[1]=zielzeit
             var fastestArrival;
@@ -309,9 +312,8 @@ function htmlToData(resultLinks){
   buildRouteObject(busNr,stops,times,routesObject);
 
   console.log("route"+routeNumber+" : "+JSON.stringify(routesObject) + "\n\n"); //JSON Object log
-  localforage.setItem("route"+routeNumber,routesObject,function(err){
-    tracker.removeProcess();
-  });
+  relevantRoutes.push(routesObject);
+  tracker.removeProcess();
   routeNumber++;
   
   
