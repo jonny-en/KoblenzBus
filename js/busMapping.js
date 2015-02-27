@@ -60,12 +60,22 @@ window.onload = function(){
 function trim (str) {
   return str.replace(/[\n\r]/g, ' ').replace(/ +/g, ' ').replace(/^\s+/g, '').replace(/\s+$/g, '');
 }
+ 
+function switchViewTo(viewname){
+  $('.view').each(function(index) {
+          if ($(this).attr('id') == viewname) {
+              $(this).show();
+          } else {
+              $(this).hide();
+          }
+  });
+}
 
 //ON BUTTON PRESS
 //Schritt 1: Anfrage an Bahn mit Start und Ziel
 function getData(start, finish, date){ // Finde mit aktuellem Datum wenn date==null, ansonsten verwende Date
 
-      if (start==="" || finish===""){
+      if (start===null || finish===null){
         console.log("NO INPUT!");
         return;
       }
@@ -80,13 +90,15 @@ function getData(start, finish, date){ // Finde mit aktuellem Datum wenn date==n
       //Bendorf -> Uni
       //var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G=winninger str&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G=bendorf schlosspark&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate=02.01.15&REQ0JourneyTime=14%3A15';
       //Variable Anfrage      
-      var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G='+start+'&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G='+finish+'&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate='+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'&REQ0JourneyTime='+date.getHours()+'%3A'+date.getMinutes();
+      var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G='+start.stopname+" "+start.town+'&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G='+finish.stopname+" "+finish.town+'&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate='+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'&REQ0JourneyTime='+date.getHours()+'%3A'+date.getMinutes();
       //Date Test
       //var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G=winninger str Koblenz&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G=bendorf schlosspark&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate='+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'&REQ0JourneyTime='+date.getHours()+'%3A'+(date.getMinutes()+1);
       
       console.log(bahnREQ);
       doCORSRequestRoute({
         method: 'GET',
+        start: start,
+        destination: finish,
         url: bahnREQ,
         data: null
       });
@@ -97,7 +109,7 @@ function doCORSRequestRoute(options) { //async Request
   var x = new XMLHttpRequest();
   x.open(options.method, cors_api_url + options.url);
   x.onload = x.onerror = function(){
-    requestLinks(x.responseText);};
+    requestLinks(x.responseText,options.start,options.destination);};
   x.send(options.data);
 }
 
@@ -173,7 +185,7 @@ function loadOverpassData(){ //Läd nur Stops, da Routen nicht zur Verarbeitung 
 
 
 //Schritt 2: Filtere eigentliche Routen-Links und frage an
-function requestLinks(result){
+function requestLinks(result,start,destination){
         if (result.indexOf("nicht eindeutig")>-1){  //Eingabe nicht eindeutig
           var parser = new DOMParser();
           var html = parser.parseFromString(result,"text/html");
@@ -190,7 +202,32 @@ function requestLinks(result){
               } 
           }
           if (startOptions.length>0){
+            switchViewTo("stopSelection_view");
+            $("#stops").empty();
+
+            for (var n=0; n<startOptions.length;n++){
+              $("#stops").append("<li><button id='btn"+n+"'>"+startOptions[n]+"</button></li>");
+              $("#btn"+n).click(function(){
+                  var splitname= $(this).text().split(",");
+                  start.stopname=splitname[0];
+                  localforage.getItem("favList",function(err,value){
+                    var favlist=value;
+                    for (var i=0; i<favlist.length;i++){
+                      if(favlist[i].reference===start.reference){
+                        favlist[i]=start;
+                        localforage.setItem("favList",favlist,function(err,value){
+                          switchViewTo("route_view");
+                        })
+                      }
+                    }
+                  });
+                  
+                  
+              });
+            }
+
             console.log("ERROR - NICHT EINDEUTIG (Starthaltestelle):\n"+JSON.stringify(startOptions));
+            return;
           }
           
           var destinationOptionString = JSON.stringify(html.getElementsByName("REQ0JourneyStopsZ0K")[0].innerHTML);
@@ -206,7 +243,30 @@ function requestLinks(result){
             } 
           }
           if(destinationOptions.length>0){
+          switchViewTo("stopSelection_view");
+            $("#stops").empty();
+
+            for (var n=0; n<destinationOptions.length;n++){
+              $("#stops").append("<li><button id='btn"+n+"'>"+destinationOptions[n]+"</button></li>");
+              $("#btn"+n).click(function(){
+                  var splitname= $(this).text().split(",");
+                  destination.stopname=splitname[0];
+                  localforage.getItem("favList",function(err,value){
+                    var favlist=value;
+                    for (var i=0; i<favlist.length;i++){
+                      if(favlist[i].reference===destination.reference){
+                        favlist[i]=destination;
+                        localforage.setItem("favList",favlist,function(err,value){
+                          switchViewTo("route_view");
+                        })
+                      }
+                    }
+                  });   
+              });
+            }
+
           console.log("ERROR - NICHT EINDEUTIG (Endhaltestelle):\n"+JSON.stringify(destinationOptions));
+          return;
           }
           return;
         }

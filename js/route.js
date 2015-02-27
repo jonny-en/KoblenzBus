@@ -142,11 +142,10 @@ $(document).ready(function() {
           }
         }
 
-
-      	//Finde ausgewählte Elemente und baue daraus Anfragen
-      	var startQuery= start.stopname +" "+ start.town;
-      	var destinationQuery= destination.stopname +" "+destination.town;
-      	getData(startQuery,destinationQuery,null);
+        localforage.getItem("date",function(err,value){
+        	getData(start,destination,value);
+        });
+      	
 
       }
  	  });	//getTownNamesByPosition(testPosLat,testPosLon);
