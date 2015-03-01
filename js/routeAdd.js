@@ -181,7 +181,7 @@ function getStopAndTownByPosition(latitude,longitude){
         }
         
         $("#town").val(town);
-        $("#stopname").val(busStops[0]);
+        $("#firststop").val(busStops[0]);
         
       } else{ // mehrere Ergebnisse -> Auswahlbildschirm -> Trage ein
 
@@ -197,29 +197,52 @@ function getStopAndTownByPosition(latitude,longitude){
         $("#stops").empty();
         //Fülle mit Liste
 		for (var n=0; n<busStops.length;n++){
-	          $("#stops").append("<li><button id='btn"+n+"'>"+busStops[n]+"</button></li>");
+	          $("#stops").append("<li><button class='stopselect-btn' id='btn"+n+"'>"+busStops[n]+"</button></li>");
 	          $("#btn"+n).click(function(){
-	          		//Zurück zu RouteAdd 
-	          		$('.view').each(function(index) {
-	        			if ($(this).attr('id') == 'routeAdd_view') {
-	           			 $(this).show();
-	        			} else {
-	            			$(this).hide();
-        				}
-        			});
-        			//Switch auf manual
-        			if($("#manual").hasClass("notselected")){
-			           $("#manual").removeClass("notselected").addClass("selected");
-			           $("#location").removeClass("selected").addClass("notselected");
-			           $("#locationview").css("z-index","-1");
-			           $("#manualview").css("z-index","1");
-			        }
-
-			        $("#town").val(town);
-        			$("#stopname").val($(this).text());
+                if($(this).hasClass('clicked')){
+                  $(this).removeClass('clicked');
+                }else{
+                  $(this).toggleClass('clicked');
+                }
        		  });
 	    }
-	    //noch Funktionen zuweisen (mit town)
+      $("#stops").append("<li><button id='continue-track'>Weiter</button></li>");
+      $("#continue-track").click(function(){
+                //All checked in an Array -> Fill Add
+                var selectedButtons =[];
+                $(".stopselect-btn").each(function(){
+                  if($(this).hasClass('clicked')){
+                    selectedButtons.push($(this).text());
+                  }
+                });
+
+                //Zurück zu RouteAdd 
+                $('.view').each(function(index) {
+                if ($(this).attr('id') == 'routeAdd_view') {
+                   $(this).show();
+                } else {
+                    $(this).hide();
+                }
+              });
+              //Switch auf manual
+              if($("#manual").hasClass("notselected")){
+                 $("#manual").removeClass("notselected").addClass("selected");
+                 $("#location").removeClass("selected").addClass("notselected");
+                 $("#locationview").css("z-index","-1");
+                 $("#manualview").css("z-index","1");
+              }
+              $("#town").val(town);
+
+              for (var n=0;n<selectedButtons.length;n++){
+                if (n===0){
+                  $("#firststop").val(selectedButtons[0]);
+                } else {
+                  $("#stoplist-add").append('<li><p><input class="stopname" type="text" placeholder="Haltestellenname" value="'+selectedButtons[n]+'" /></p></li>');
+                }
+                
+              }
+              
+            });
       }
 
 
