@@ -21,6 +21,7 @@ var DataObserver=function (){ //Singleton um sicherzustellen das alle denselben 
     }
     arguments.callee._singletonInstance = this;
 
+    DataObserver.prototype.error=false;
     DataObserver.prototype.activeProcess=0;
     DataObserver.prototype.addProcess= function(){
       console.log("Added Process");
@@ -80,6 +81,7 @@ function getData(start, finish, date){ // Finde mit aktuellem Datum wenn date==n
       }
       relevantRoutes=[];
       routeNumber=0;
+      tracker.error=false;
       if(date===null){
         date=new Date();
       } 
@@ -101,7 +103,9 @@ function getData(start, finish, date){ // Finde mit aktuellem Datum wenn date==n
       doCORSRequestRoute({
         method: 'GET',
         start: start,
+        startindex: n, //für Error Handler
         destination: finish,
+        destinationindex: m, //für Error Handler
         url: bahnREQ,
         data: null
       });
@@ -115,7 +119,7 @@ function doCORSRequestRoute(options) { //async Request
   var x = new XMLHttpRequest();
   x.open(options.method, cors_api_url + options.url);
   x.onload = x.onerror = function(){
-    requestLinks(x.responseText,options.start,options.destination);};
+    requestLinks(x.responseText,options.start,options.startindex,options.destination,options.destinationindex);};
   x.send(options.data);
 }
 
@@ -191,7 +195,10 @@ function loadOverpassData(){ //Läd nur Stops, da Routen nicht zur Verarbeitung 
 
 
 //Schritt 2: Filtere eigentliche Routen-Links und frage an
-function requestLinks(result,start,destination){
+function requestLinks(result,start,startindex,destination,destinationindex){
+        if (tracker.error===true){
+          return;
+        }
         if (result.indexOf("nicht eindeutig")>-1){  //Eingabe nicht eindeutig
           var parser = new DOMParser();
           var html = parser.parseFromString(result,"text/html");
@@ -209,18 +216,19 @@ function requestLinks(result,start,destination){
           }
           //Error Handler
           if (startOptions.length>0){
+            tracker.error=true;
             switchViewTo("stopSelection_view");
             $("#stops").empty();
-
-            for (var n=0; n<startOptions.length;n++){
-              $("#stops").append("<li><button id='btn"+n+"'>"+startOptions[n]+"</button></li>");
+            $("#stops").append('<li><h1>Haltestelle "'+start.stopname[startindex]+'" war nicht eindeutig.</h1></li>');
+            for (var n=0; n<5;n++){
+              $("#stops").append("<li><button id='btn"+n+"''>"+startOptions[n]+"</button></li>");
               $("#btn"+n).click(function(){
                   var splitname= $(this).text().split(",");
-                  start.stopname=splitname[0];
+                  start.stopname[startindex]=splitname[0];
                   localforage.getItem("favList",function(err,value){
                     var favlist=value;
                     for (var i=0; i<favlist.length;i++){
-                      if(favlist[i].reference===start.reference){
+                      if(favlist[i].reference===start.reference){             
                         favlist[i]=start;
                         localforage.setItem("favList",favlist,function(err,value){
                           switchViewTo("route_view");
@@ -228,7 +236,6 @@ function requestLinks(result,start,destination){
                       }
                     }
                   });
-                  
                   
               });
             }
@@ -252,25 +259,27 @@ function requestLinks(result,start,destination){
 
           //Error Handler
           if(destinationOptions.length>0){
-          switchViewTo("stopSelection_view");
+            tracker.error=true;
+            switchViewTo("stopSelection_view");
             $("#stops").empty();
-
-            for (var n=0; n<destinationOptions.length;n++){
-              $("#stops").append("<li><button id='btn"+n+"'>"+destinationOptions[n]+"</button></li>");
+            $("#stops").append('<li><h1>Haltestelle "'+destination.stopname[destinationindex]+'" war nicht eindeutig.</h1></li>');
+            for (var n=0; n<5;n++){
+              $("#stops").append("<li><button id='btn"+n+"''>"+destinationOptions[n]+"</button></li>");
               $("#btn"+n).click(function(){
                   var splitname= $(this).text().split(",");
-                  destination.stopname=splitname[0];
+                  destination.stopname[destinationindex]=splitname[0];
                   localforage.getItem("favList",function(err,value){
                     var favlist=value;
                     for (var i=0; i<favlist.length;i++){
-                      if(favlist[i].reference===destination.reference){
+                      if(favlist[i].reference===destination.reference){             
                         favlist[i]=destination;
                         localforage.setItem("favList",favlist,function(err,value){
                           switchViewTo("route_view");
                         })
                       }
                     }
-                  });   
+                  });
+                  
               });
             }
 
@@ -363,6 +372,9 @@ function isRelevant(fastestTime,compareTime){ //Format der Zeiten HH:MM
 
 //Schritt 3: Filtere brauchbare Informationen und speichere
 function htmlToData(resultLinks){
+  if (tracker.error===true){
+          return;
+  }
   var parser=new DOMParser();
   var htmlLinks = parser.parseFromString(resultLinks,"text/html");
 
@@ -787,7 +799,9 @@ function storeInOverpassData(town, date, elements){
 
 function processData(){
   //------------- PLACEHOLDER --------------------
-
+  if (tracker.error===true){
+          return;
+  }
   // TODO work work work
 	console.log("Process Data!");
   //loadMap(0); //vorest zeige erstbeste Route
@@ -796,13 +810,18 @@ function processData(){
 //Schritt 5 - stelle Route auf Karte dar
 //FIX CODE HADOUKEN!!
 function loadMap(index){ //index der Route die dargestellt werden soll
-  localforage.getItem("route"+index,function(err, value){
+//------------ ÄNDERN!!!!
+  localforage.getItem("routes",function(err, value){ 
     if (err){
-      console.log ("Couldnt load route");
+      console.log ("Couldnt load routes");
     } else{
-      var lon=value.route[0].stops[0].coordinates[0].lon;
-      var lat=value.route[0].stops[0].coordinates[0].lat;
+      var obj=routes[0];
+      var lon=obj.route[0].stops[0].coordinates[0].lon;
+      var lat=obj.route[0].stops[0].coordinates[0].lat;
       
+//-------- bis hier
+
+
       map.setView(new L.LatLng(lat,lon),20);
       for (var i=0;i<value.route.length;i++){
         //Finde Stadt in der die Route läuft
