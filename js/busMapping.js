@@ -35,7 +35,6 @@ var DataObserver=function (){ //Singleton um sicherzustellen das alle denselben 
       this.activeProcess--;
       if (this.activeProcess===0){
         localforage.setItem("routes",relevantRoutes,function(err){
-          console.log("Start processData");
           processData();
         })
         
@@ -85,27 +84,23 @@ function getData(start, finish, date){ // Finde mit aktuellem Datum wenn date==n
         date=new Date();
       } 
 
-      //TestObject für multiple Stopanfragen
-      var obj = new Object();
-      obj.stopname = ["Uni/Winninger Str.","Oberweiher"];
-      obj.town = "Koblenz";
-      obj.icon = "heart";
-      obj.reference = $("#reference").val();
+      //TestObject für multiple Stopanfragen n x m
 
-      for (var n=0; n<obj.stopname.length;n++){
+      for (var n=0; n<start.stopname.length;n++){
+        for (var m=0; m<finish.stopname.length;m++){
         //Ausweichanfrage falls EVM Daten nicht vorhanden (aka Fußwegtest) (beachte Datum)
       //var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G=trier universität mensa&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G=trier%20hbf&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate=23.12.14&REQ0JourneyTime=14%3A15';
       //Bendorf -> Uni
       //var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G=winninger str&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G=bendorf schlosspark&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate=02.01.15&REQ0JourneyTime=14%3A15';
       //Variable Anfrage      
-      var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G='+obj.stopname[n]+" "+obj.town+'&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G='+finish.stopname+" "+finish.town+'&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate='+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'&REQ0JourneyTime='+date.getHours()+'%3A'+date.getMinutes();
+      var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G='+start.stopname[n]+" "+start.town+'&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G='+finish.stopname[m]+" "+finish.town+'&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate='+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'&REQ0JourneyTime='+date.getHours()+'%3A'+date.getMinutes();
       //Date Test
       //var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G=winninger str Koblenz&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G=bendorf schlosspark&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate='+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'&REQ0JourneyTime='+date.getHours()+'%3A'+(date.getMinutes()+1);
       
       console.log(bahnREQ);
       doCORSRequestRoute({
         method: 'GET',
-        start: obj,
+        start: start,
         destination: finish,
         url: bahnREQ,
         data: null
@@ -113,6 +108,7 @@ function getData(start, finish, date){ // Finde mit aktuellem Datum wenn date==n
       }
       
     }
+  }
 
 //Helper
 function doCORSRequestRoute(options) { //async Request

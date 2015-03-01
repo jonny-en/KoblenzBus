@@ -1,9 +1,4 @@
 $(document).ready(function(){
-
-
-   $("#backbtnEdit").click({
-        param: 'route_view'
-    }, showView);
 	 
 	$("#changeIconEdit").click(function(){
 		$('.view').each(function(index) {
