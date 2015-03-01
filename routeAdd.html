@@ -41,16 +41,23 @@
         <button id="trackLocation">Finde Haltestelle</button>
     </div>
     <div id="manualview">
-        <form>
             <p>
                 <input id="town" type="text" placeholder="Ort" />
-                <button type="reset">Clear</button>
             </p>
-            <p>
-                <input id="stopname" type="text" placeholder="Haltestellenname" />
-                <button type="reset">Clear</button>
-            </p>
-        </form>
+
+            <ul id="stoplist-add">
+                <li id="first">
+                    <p>
+                        <input class="stopname" type="text" placeholder="Haltestellenname" />
+                    </p>
+                </li>
+
+            </ul>
+            
+            
+
+        <button id="addStop-add">Weitere Haltestelle</button>
+        <button id="deleteStop-add">Löschen des letzten Busstops</button>
     </div>
 </div>
 <div class="clearboth"></div>

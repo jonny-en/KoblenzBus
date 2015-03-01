@@ -85,23 +85,33 @@ function getData(start, finish, date){ // Finde mit aktuellem Datum wenn date==n
         date=new Date();
       } 
 
-      //Ausweichanfrage falls EVM Daten nicht vorhanden (aka Fußwegtest) (beachte Datum)
+      //TestObject für multiple Stopanfragen
+      var obj = new Object();
+      obj.stopname = ["Uni/Winninger Str.","Oberweiher"];
+      obj.town = "Koblenz";
+      obj.icon = "heart";
+      obj.reference = $("#reference").val();
+
+      for (var n=0; n<obj.stopname.length;n++){
+        //Ausweichanfrage falls EVM Daten nicht vorhanden (aka Fußwegtest) (beachte Datum)
       //var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G=trier universität mensa&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G=trier%20hbf&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate=23.12.14&REQ0JourneyTime=14%3A15';
       //Bendorf -> Uni
       //var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G=winninger str&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G=bendorf schlosspark&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate=02.01.15&REQ0JourneyTime=14%3A15';
       //Variable Anfrage      
-      var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G='+start.stopname+" "+start.town+'&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G='+finish.stopname+" "+finish.town+'&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate='+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'&REQ0JourneyTime='+date.getHours()+'%3A'+date.getMinutes();
+      var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G='+obj.stopname[n]+" "+obj.town+'&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G='+finish.stopname+" "+finish.town+'&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate='+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'&REQ0JourneyTime='+date.getHours()+'%3A'+date.getMinutes();
       //Date Test
       //var bahnREQ = 'http://mobile.bahn.de/bin/mobil/query.exe/dox?REQ0Tariff_TravellerAge.1=35&REQ0JourneyStopsS0A=1&REQ0JourneyStopsS0G=winninger str Koblenz&REQ0JourneyStopsS0ID=&REQ0JourneyStopsZ0A=1&REQ0JourneyStopsZ0G=bendorf schlosspark&REQ0JourneyStopsZ0ID=&start=Suchen&REQ0Tariff_Class=2&REQ0Tariff_TravellerReductionClass.1=0&REQ0JourneyDate='+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'&REQ0JourneyTime='+date.getHours()+'%3A'+(date.getMinutes()+1);
       
       console.log(bahnREQ);
       doCORSRequestRoute({
         method: 'GET',
-        start: start,
+        start: obj,
         destination: finish,
         url: bahnREQ,
         data: null
       });
+      }
+      
     }
 
 //Helper
@@ -201,6 +211,7 @@ function requestLinks(result,start,destination){
                 beginIndex=i+1;
               } 
           }
+          //Error Handler
           if (startOptions.length>0){
             switchViewTo("stopSelection_view");
             $("#stops").empty();
@@ -242,6 +253,8 @@ function requestLinks(result,start,destination){
               beginIndex=i+1;
             } 
           }
+
+          //Error Handler
           if(destinationOptions.length>0){
           switchViewTo("stopSelection_view");
             $("#stops").empty();
@@ -330,6 +343,8 @@ function isRelevant(fastestTime,compareTime){ //Format der Zeiten HH:MM
   resultSplit[0]=compareTimeSplit[0]-fastestTimeSplit[0];
   resultSplit[1]=compareTimeSplit[1]-fastestTimeSplit[1];
   //console.log(resultSplit[0]+":"+resultSplit[1]);
+
+
   if(resultSplit[1]<0){
     resultSplit[0]--;
     resultSplit[1]+=60;

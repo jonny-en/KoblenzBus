@@ -27,17 +27,25 @@ $(document).ready(function(){
 		
 
 	$("#trackLocation").click(function(){
-		console.log("Button pressed");
 		findStops();
 	});
 
+  $("#addStop-add").click(function(){
+    $("#stoplist-add").append('<li><p><input class="stopname" type="text" placeholder="Haltestellenname" /></p></li>')
+  });
+
+   $("#deleteStop-add").click(function(){
+    if($("#stoplist-add").children().last().attr("id")!="first"){
+      $("#stoplist-add").children().last().remove();
+    }
+  });
 		// for now you can only manually add favorites
 		// before adding it to localforage check if there is already an entry with same referencename
 		// if the list wasn't already initialised it gets initialised
 		$("#addbtn").click(function(){
 			if($("#stopname").val()!== "" && $("#stopname").val() !== "" && $("#reference").val() !== ""){
 				var obj = new Object();
-				obj.stopname = $("#stopname").val();
+				obj.stopname = [$("#stopname").val()];
 				obj.town = $("#town").val();
 				obj.icon = "heart";
 				obj.reference = $("#reference").val();
