@@ -12,7 +12,7 @@ $(document).ready(function(){
 			var icon = event.target.id;
 			if(icon!=""){
 				console.log(icon);
-				$("#icon").remove();
+				$("#icon-edit").remove();
 				$("#iconContainer-edit").append('<div id="icon-edit" name="'+icon+'"><img src="img/icons/favs/'+icon+'.svg"></img></div>');
 				
 				

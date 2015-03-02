@@ -62,7 +62,7 @@ $(document).ready(function() {
 			if(index!=null){
 				localforage.getItem("favList",function(err,value){
 					value[index].reference = $('#name-edit').val();
-					value[index].icon = $("#icon").attr("name");
+					value[index].icon = $("#icon-edit").attr("name");
 					value[index].stopname = $('#busstop-edit').val();
 					localforage.setItem("favList",value,function(err){
 						index = null;
@@ -74,12 +74,8 @@ $(document).ready(function() {
 
 	$("#deletefavbtn").click(function(){
 		if(index!=null){
-			console.log("inif");
 			localforage.getItem("favList",function(err,value){
-				console.log(index);
-				console.log(value.length);
 				value.splice(index,1);
-				console.log(value.length);
 				localforage.setItem("favList",value,function(err){
 					index = null;
 					location.reload();
@@ -108,7 +104,7 @@ $(document).ready(function() {
 						}
 					}
 					$('#busstop-edit').val(value[index].stopname);
-					$('#icon-container').append('<div id="icon-edit" name="'+value[index].icon+'"><img src="img/icons/favs/'+value[index].icon+'.svg"></img></div>');
+					$('#iconContainer-edit').append('<div id="icon-edit" name="'+value[index].icon+'"><img src="img/icons/favs/'+value[index].icon+'.svg"></img></div>');
 				});
 			}
 		});

@@ -42,18 +42,12 @@ $(document).ready(function(){
 		// for now you can only manually add favorites
 		// before adding it to localforage check if there is already an entry with same referencename
 		// if the list wasn't already initialised it gets initialised
-		$("#addbtn").click(function(){
+$("#addbtn").click(function(){
 			if($("#stopname").val()!== "" && $("#stopname").val() !== "" && $("#reference").val() !== ""){
 				var obj = new Object();
-				obj.stopname = [];
-
-        //Find stopnames by lookibg for class
-        $('.stopname').each(function(index) {
-          obj.stopname.push($(this).val());
-        });
-
+				obj.stopname = $("#stopname").val();
 				obj.town = $("#town").val();
-				obj.icon = "heart";
+				obj.icon = $("#icon-add").attr("name");
 				obj.reference = $("#reference").val();
 
 				localforage.getItem("favList",function(err,value){
@@ -80,7 +74,7 @@ $(document).ready(function(){
 					
 		});
     
-	$("#changeIconEdit").click(function(){
+	$("#changeIconAdd").click(function(){
 		$('.view').each(function(index) {
     	if($(this).attr('id') == 'chooseIcon_view') {
       	$(this).show();
@@ -92,7 +86,7 @@ $(document).ready(function(){
 			var icon = event.target.id;
 			if(icon!=""){
 				$("#icon-add").remove();
-				$("#icon-container").append('<div id="icon-add" name="'+icon+'"><img src="img/icons/favs/'+icon+'.svg"></img></div>');
+				$("#iconContainer-add").append('<div id="icon-add" name="'+icon+'"><img src="img/icons/favs/'+icon+'.svg"></img></div>');
 				
 				
 
