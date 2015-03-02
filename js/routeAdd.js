@@ -44,8 +44,14 @@ $(document).ready(function(){
 		// if the list wasn't already initialised it gets initialised
 $("#addbtn").click(function(){
 			if($("#stopname").val()!== "" && $("#stopname").val() !== "" && $("#reference").val() !== ""){
-				var obj = new Object();
-				obj.stopname = $("#stopname").val();
+				var obj = new Object();				
+        obj.stopname = [];
+
+        //Find stopnames by lookibg for class
+        $('.stopname').each(function(index) {
+          obj.stopname.push($(this).val());
+        });
+
 				obj.town = $("#town").val();
 				obj.icon = $("#icon-add").attr("name");
 				obj.reference = $("#reference").val();
