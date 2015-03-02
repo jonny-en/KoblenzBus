@@ -27,8 +27,23 @@
     </div>
     
     <div id="busstops">
-     	<p>Zugehörige Haltestellen</p>
-     	<input id="busstop-edit" type="text" />
+     	
+     	<ul id="stoplist-edit">
+                <li>
+                    <p>
+                        <input id="town-edit" type="text" placeholder="Ort" />
+                    </p>
+                </li>
+                <li id="first-edit">
+                    <p>
+                        <input id="firststop-edit" class="stopname" type="text" placeholder="Haltestellenname" />
+                    </p>
+                </li>
+
+        </ul>
+        <button id="addStop-edit">Weitere Haltestelle</button>
+        <button id="deleteStop-edit">(letzte) Löschen</button>
+
 		 	<button id="savebtn-edit">Bestätigen</button>
 			<button id="deletefavbtn">Favoriten löschen</button>
     </div>

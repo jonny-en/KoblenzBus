@@ -49,7 +49,9 @@ $("#addbtn").click(function(){
 
         //Find stopnames by lookibg for class
         $('.stopname').each(function(index) {
-          obj.stopname.push($(this).val());
+          if ($(this).val()!="" && $(this).val()!=null){
+            obj.stopname.push($(this).val());
+          }          
         });
 
 				obj.town = $("#town").val();
@@ -111,7 +113,7 @@ $("#addbtn").click(function(){
 
 
 //Globals 
-var range=200.0;
+var range=500.0;
 
 function findStops(){
   //Normale Lösung

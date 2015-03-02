@@ -61,9 +61,26 @@ $(document).ready(function() {
 	$('#savebtn-edit').on('click',function(){
 			if(index!=null){
 				localforage.getItem("favList",function(err,value){
+					for (var i=0; i<value.length; i++){
+							if((value[i].reference === $('#name-edit').val())&&(i!=index)){
+								alert("Name ist schon vergeben!");
+								return;
+							}
+					}
+
 					value[index].reference = $('#name-edit').val();
 					value[index].icon = $("#icon-edit").attr("name");
-					value[index].stopname = $('#busstop-edit').val();
+
+					var stopname = [];
+
+        			//Find stopnames by lookibg for class
+        			$('.stopname').each(function(index) {
+	          			if ($(this).val()!="" && $(this).val()!=null){
+	            			stopname.push($(this).val());
+	          			}          
+        			});
+        			value[index].stopname=stopname;
+					value[index].town = $("#town-edit").val();
 					localforage.setItem("favList",value,function(err){
 						index = null;
 						location.reload();
@@ -103,7 +120,14 @@ $(document).ready(function() {
 							index = i;
 						}
 					}
-					$('#busstop-edit').val(value[index].stopname);
+					$('#town-edit').val(value[index].town);
+					for (var n=0; n < value[index].stopname.length; n++){
+						if (n===0){
+                  			$("#firststop-edit").val(value[index].stopname[0]);
+		                } else {
+		                  $("#stoplist-edit").append('<li><p><input class="stopname" type="text" placeholder="Haltestellenname" value="'+value[index].stopname[n]+'" /></p></li>');
+		                }
+					}
 					$('#iconContainer-edit').append('<div id="icon-edit" name="'+value[index].icon+'"><img src="img/icons/favs/'+value[index].icon+'.svg"></img></div>');
 				});
 			}

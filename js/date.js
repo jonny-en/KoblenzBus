@@ -6,6 +6,7 @@ $(document).ready(function(){
 
 		$("#setTime").click(function(){
 			if($("#departure_time").val()!=""&& $("#departure_date").val()!=""){
+				
 				var time = $("#departure_time").val().split(":");
 				var date = $("#departure_date").val().split(".");
 				
@@ -18,13 +19,13 @@ $(document).ready(function(){
 				var d = new Date(year, month, day, hours, minutes, 0, 0);
 
 				localforage.setItem("date",d,function(err){
-					$('.view').each(function(index) {
-        		if($(this).attr('id') == 'route_view') {
-            	$(this).show();
-        		}else {
-            	$(this).hide();
-        		}
-					});
+						$('.view').each(function(index) {
+			        		if($(this).attr('id') == 'route_view') {
+			            	$(this).show();
+			        		}else {
+			            	$(this).hide();
+			        		}
+						});
 				});
 			}
 			
