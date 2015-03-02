@@ -24,9 +24,6 @@ $(document).ready(function(){
 				console.log(icon);
 				$("#icon-edit").remove();
 				$("#iconContainer-edit").append('<div id="icon-edit" name="'+icon+'"><img src="img/icons/favs/'+icon+'.svg"></img></div>');
-				
-				
-
 				$('.view').each(function(index) {
     			if($(this).attr('id') == 'routeEdit_view') {
       			$(this).show();
