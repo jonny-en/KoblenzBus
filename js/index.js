@@ -37,6 +37,7 @@ $(document).ready(function() {
         $("#panel1").attr("aria-selected", false);
         $("#panel2").attr("aria-selected", true);
         $("#panel3").attr("aria-selected", false);
+        checkMap();
     });
 
     $("#panel3 , #tab3").click(function() {
@@ -59,3 +60,17 @@ function showView(event) {
         }
     });
 };
+
+function checkMap(){
+    if (map==null){
+        map = L.map('map');
+
+
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ',
+        id: 'examples.map-i875mjb7'
+      }).addTo(map);
+      map.setView(new L.LatLng(50.3533278, 7.5943951), 14);
+    }
+}

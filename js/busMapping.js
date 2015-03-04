@@ -822,35 +822,65 @@ function processData(){
   }
   // TODO work work work
 	console.log("Process Data!");
-  //loadMap(0); //vorest zeige erstbeste Route
+  loadMap(0); //vorest zeige erstbeste Route
+  
+  
 }
 
 //Schritt 5 - stelle Route auf Karte dar
 //FIX CODE HADOUKEN!!
 function loadMap(index){ //index der Route die dargestellt werden soll
-//------------ ÄNDERN!!!!
+
+  switchViewTo('map_view');
+  $("#panel1").attr("aria-selected", false);
+  $("#panel2").attr("aria-selected", true);
+  $("#panel3").attr("aria-selected", false);
+  if (map==null){
+    map = L.map('map');
+
+
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ',
+      id: 'examples.map-i875mjb7'
+    }).addTo(map);
+  }
   localforage.getItem("routes",function(err, value){ 
     if (err){
       console.log ("Couldnt load routes");
     } else{
-      var obj=routes[0];
-      var lon=obj.route[0].stops[0].coordinates[0].lon;
-      var lat=obj.route[0].stops[0].coordinates[0].lat;
+      var obj=value[index];
+      //Finde Koordinaten auf die man die View setzen kann
+      var lat;
+      var lon;
+      outer:
+      for (var a=0; a<obj.route.length;a++){
+        for (var b=0; b<obj.route[a].stops.length; b++){
+          if ((obj.route[a].stops[b].coordinates[0].lon != null) && (obj.route[0].stops[0].coordinates[0].lon != "")){
+            lon=obj.route[a].stops[b].coordinates[0].lon;
+            lat=obj.route[a].stops[b].coordinates[0].lat;
+            break outer;
+          }
+        }
+      }
       
-//-------- bis hier
+      if (lat == null || lon == null){
+        lon=7.5943951;
+        lat=50.3533278;
+      }
 
 
-      map.setView(new L.LatLng(lat,lon),20);
-      for (var i=0;i<value.route.length;i++){
+      map.setView(new L.LatLng(lat,lon),18);
+      for (var i=0;i<obj.route.length;i++){
         //Finde Stadt in der die Route läuft
-        var filteredStop= filterDistricts(value.route[i].stops[0].name); 
+        var filteredStop= filterDistricts(obj.route[i].stops[0].name); 
         var townNames = getTownNames(filteredStop); //Unperformant!!! verbessern
         for (var n=0;n<overpassRoutes.length;n++){
           //finde Route -> finde ways zu refs in relation -> zeichne ein
           if (overpassRoutes[n].town===townNames[0]){
             for (var m=0;m<overpassRoutes[n].elements.length;m++){
               if(overpassRoutes[n].elements[m].tags!=null){
-                if(overpassRoutes[n].elements[m].tags.ref===value.route[i].routeName){
+                if(overpassRoutes[n].elements[m].tags.ref===obj.route[i].routeName){
                   //Route gefunden
                   for (var r=0;r<overpassRoutes[n].elements[m].members.length;r++){
                     if (overpassRoutes[n].elements[m].members[r].type === "way"){
@@ -907,10 +937,10 @@ function loadMap(index){ //index der Route die dargestellt werden soll
 
         }
         //Set Marker
-        for (var j=0;j<value.route[i].stops.length;j++){
-          for (var k=0;k<value.route[i].stops[j].coordinates.length;k++){
-            var lon=value.route[i].stops[j].coordinates[k].lon;
-            var lat=value.route[i].stops[j].coordinates[k].lat;
+        for (var j=0;j<obj.route[i].stops.length;j++){
+          for (var k=0;k<obj.route[i].stops[j].coordinates.length;k++){
+            var lon=obj.route[i].stops[j].coordinates[k].lon;
+            var lat=obj.route[i].stops[j].coordinates[k].lat;
             var marker = L.marker([lat,lon]).addTo(map);
           }
         }
