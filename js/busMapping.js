@@ -821,8 +821,31 @@ function processData(){
           return;
   }
   // TODO work work work
-	console.log("Process Data!");
-  loadMap(0); //vorest zeige erstbeste Route
+	localforage.getItem("routes",function(err, value){ 
+    if (err){
+      console.log ("Couldnt load routes");
+    } else{
+      var minimum;
+      var index=0;
+      for (var i=0; i<value.length; i++){
+        if (i===0){
+          minimum=value[i].route[value[i].route.length-1].times[1];
+        } else {
+          // 23:00 -> 0 -> 1 Uhr Problem
+          //Ansonsten funktioniert Direktvergleich von String
+          if (minimum>value[i].route[value[i].route.length-1].times[1]){
+            index=i;
+            minimum=value[i].route[value[i].route.length-1].times[1];
+          }
+
+        }
+        
+      }
+    }
+
+    console.log("DRAW: "+index);
+    loadMap(index);
+  });
   
   
 }
@@ -870,7 +893,7 @@ function loadMap(index){ //index der Route die dargestellt werden soll
       }
 
 
-      map.setView(new L.LatLng(lat,lon),18);
+      map.setView(new L.LatLng(lat,lon),14);
       for (var i=0;i<obj.route.length;i++){
         //Finde Stadt in der die Route läuft
         var filteredStop= filterDistricts(obj.route[i].stops[0].name); 
