@@ -19,13 +19,10 @@ $(document).ready(function(){
 				var d = new Date(year, month, day, hours, minutes, 0, 0);
 
 				localforage.setItem("date",d,function(err){
-						$('.view').each(function(index) {
-			        		if($(this).attr('id') == 'route_view') {
-			            	$(this).show();
-			        		}else {
-			            	$(this).hide();
-			        		}
-						});
+						$("#panel1").attr("aria-selected", true);
+        				$("#panel2").attr("aria-selected", false);
+        				$("#panel3").attr("aria-selected", false);
+						location.reload();
 				});
 			}
 			
@@ -34,13 +31,10 @@ $(document).ready(function(){
 
 		$("#setNow").click(function(){
 			localforage.removeItem("date",function(err){
-				$('.view').each(function(index) {
-       		if($(this).attr('id') == 'route_view') {
-           	$(this).show();
-        	}else {
-           	$(this).hide();
-        	}
-				});
+				$("#panel1").attr("aria-selected", true);
+        		$("#panel2").attr("aria-selected", false);
+        		$("#panel3").attr("aria-selected", false);
+				location.reload();
 			});
 		});
 });

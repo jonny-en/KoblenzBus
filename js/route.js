@@ -1,5 +1,16 @@
 $(document).ready(function() {
-			
+			loadOverpassData();
+			localforage.getItem("date",function(err,value){
+				if (value != null){
+					$("#route-confirm").empty();
+					var text = "<p>Los ("+value.getDate()+"."+value.getMonth()+"."+value.getFullYear()+" - "+value.getHours()+":"+value.getMinutes()+")</p>";
+					$("#route-confirm").append(text);
+				} else {
+					$("#route-confirm").empty();
+					$("#route-confirm").append("<p>Los</p>");
+				}
+
+			});
 			var index;
 			// load favorites from localforage and add them to the favorites-lists
 			localforage.getItem("favList",function(err,value){
@@ -14,10 +25,6 @@ $(document).ready(function() {
         param: "routeAdd_view"
     }, showView);
 
-
-    $("#fav-edit").click({
-        param: "routeEdit_view"
-    }, showView);
 
 		$("#settingsbtn-route").click({
 				param: "settings_view"
@@ -113,6 +120,13 @@ $(document).ready(function() {
 				}		
 			});
 			if(referencename){
+				$('.view').each(function(index) {
+			        if ($(this).attr('id') == "routeEdit_view") {
+			            $(this).show();
+			        } else {
+			            $(this).hide();
+			        }
+			    });
 				$('#name-edit').val(referencename);
 				localforage.getItem("favList",function(err,value){
 					for(var i = 0; i < value.length; i++){

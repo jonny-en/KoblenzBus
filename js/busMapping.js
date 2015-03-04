@@ -21,10 +21,10 @@ var DataObserver=function (){ //Singleton um sicherzustellen das alle denselben 
     }
     arguments.callee._singletonInstance = this;
 
+    DataObserver.prototype.running=false;
     DataObserver.prototype.error=false;
     DataObserver.prototype.activeProcess=0;
     DataObserver.prototype.addProcess= function(){
-      console.log("Added Process");
       this.activeProcess++;
     }
     DataObserver.prototype.removeProcess= function(){
@@ -32,10 +32,10 @@ var DataObserver=function (){ //Singleton um sicherzustellen das alle denselben 
         console.log("pls add active processes first")
         return;
       }
-      console.log("Finished Process");
       this.activeProcess--;
       if (this.activeProcess===0){
-        localforage.setItem("routes",relevantRoutes,function(err){
+        this.running=false;
+        localforage.setItem("routes",relevantRoutes,function(err){          
           processData();
         })
         
@@ -45,16 +45,6 @@ var DataObserver=function (){ //Singleton um sicherzustellen das alle denselben 
 var tracker = new DataObserver(); //Erstelle Instanz bzw init Singleton
 
 var map;
-// Anpassen sobald nicht mehr in testphase
-window.onload = function(){
-
-  loadOverpassData(); //muss bleiben 
- // var testPosLat=50.3611643;
- // var testPosLon=7.5592619;
-
-}
-
-
 
 //Helper für das gesamte Dokument
 function trim (str) {
@@ -74,14 +64,22 @@ function switchViewTo(viewname){
 //ON BUTTON PRESS
 //Schritt 1: Anfrage an Bahn mit Start und Ziel
 function getData(start, finish, date){ // Finde mit aktuellem Datum wenn date==null, ansonsten verwende Date
+      if (tracker.running){
+        console.log("ALREADY RUNNING");
+        return;
+      }
+      tracker.running=true;
+      tracker.activeProcess=0;
+      tracker.error=false;
 
       if (start===null || finish===null){
         console.log("NO INPUT!");
+        tracker.running=false;
         return;
       }
       relevantRoutes=[];
       routeNumber=0;
-      tracker.error=false;
+      
       if(date===null){
         date=new Date();
       } 
@@ -197,6 +195,11 @@ function loadOverpassData(){ //Läd nur Stops, da Routen nicht zur Verarbeitung 
 //Schritt 2: Filtere eigentliche Routen-Links und frage an
 function requestLinks(result,start,startindex,destination,destinationindex){
         if (tracker.error===true){
+          tracker.running=false;
+          return;
+        }
+        if (result.indexOf("identisch")>-1){
+          console.log("Haltestellen sind identisch");
           return;
         }
         if (result.indexOf("nicht eindeutig")>-1){  //Eingabe nicht eindeutig
@@ -241,6 +244,7 @@ function requestLinks(result,start,startindex,destination,destinationindex){
             }
 
             console.log("ERROR - NICHT EINDEUTIG (Starthaltestelle):\n"+JSON.stringify(startOptions));
+            tracker.running=false;
             return;
           }
           
@@ -284,14 +288,17 @@ function requestLinks(result,start,startindex,destination,destinationindex){
             }
 
           console.log("ERROR - NICHT EINDEUTIG (Endhaltestelle):\n"+JSON.stringify(destinationOptions));
+          tracker.running=false;
           return;
           }
+          tracker.running=false;
           return;
         }
 
 
         if (result === null || result ===""){
           console.log("ERROR - SOMETHING WENT WRONG - are you even online\n");  //Handle Error 
+          tracker.running=false;
           return;
         }
         var parser=new DOMParser();
@@ -373,6 +380,7 @@ function isRelevant(fastestTime,compareTime){ //Format der Zeiten HH:MM
 //Schritt 3: Filtere brauchbare Informationen und speichere
 function htmlToData(resultLinks){
   if (tracker.error===true){
+          tracker.running=false;
           return;
   }
   var parser=new DOMParser();
@@ -395,7 +403,13 @@ function htmlToData(resultLinks){
   buildRouteObject(busNr,stops,times,routesObject);
 
   console.log("route"+routeNumber+" : "+JSON.stringify(routesObject) + "\n\n"); //JSON Object log
-  relevantRoutes.push(routesObject);
+  if (relevantRoutes.indexOf(routesObject)===-1){
+    console.log("added Route");
+    relevantRoutes.push(routesObject);
+  } else{
+    console.log("Route already in array");
+  }
+  
   tracker.removeProcess();
   routeNumber++;
   
@@ -410,6 +424,9 @@ function filterBusNr (busNr, busNrTags){
     var temp=trim(busNrTags.item(n).textContent);
     if(temp.indexOf("Bus ")>-1){
       temp=trim(temp.substring(4,temp.length));
+    }
+    if(temp.indexOf("/")>-1){ // Linie 3/13 oder 5/15 zu 3 bzw 5
+      temp=temp.split("/")[0];
     }
     busNr.push(temp);
   }
@@ -800,6 +817,7 @@ function storeInOverpassData(town, date, elements){
 function processData(){
   //------------- PLACEHOLDER --------------------
   if (tracker.error===true){
+          tracker.running=false;
           return;
   }
   // TODO work work work
@@ -900,6 +918,4 @@ function loadMap(index){ //index der Route die dargestellt werden soll
     }
   });
 
-
-  
 }

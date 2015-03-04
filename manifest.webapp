@@ -13,7 +13,6 @@
     "name": "Your name",
     "url": "http://example.com"
   },
-  "type": "privileged",
   "permissions": {},
   "installs_allowed_from": [
     "*"
