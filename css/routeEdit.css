@@ -36,7 +36,9 @@
 #changeIconEdit {
   margin-top: 1rem;
   height: 4rem;
-  width: 20rem;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
   font-size: 2rem;
   
 }
