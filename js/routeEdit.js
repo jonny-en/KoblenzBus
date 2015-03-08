@@ -1,10 +1,10 @@
 $(document).ready(function(){
 
-	$("#addStopEdit").click(function(){
+	$("#addStopEdit").unbind('click').click(function(){
 		$("#stoplistEdit").append('<li><p><input class="stopname" type="text" placeholder="Haltestellenname" /></p></li>')
 	});
 
-	$("#deleteStopEdit").click(function(){
+	$("#deleteStopEdit").unbind('click').click(function(){
 		if($("#stoplistEdit").children().last().attr("id")!="firstEdit"){
 			$("#stoplistEdit").children().last().remove();
 		}
