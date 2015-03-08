@@ -892,7 +892,7 @@ function loadMap(index){ //index der Route die dargestellt werden soll
         lat=50.3533278;
       }
 
-
+      clearMap();
       map.setView(new L.LatLng(lat,lon),14);
       for (var i=0;i<obj.route.length;i++){
         //Finde Stadt in der die Route läuft
@@ -971,4 +971,17 @@ function loadMap(index){ //index der Route die dargestellt werden soll
     }
   });
 
+}
+
+function clearMap() {
+    for(i in map._layers) {
+        if(map._layers[i]._path != undefined) {
+            try {
+                map.removeLayer(map._layers[i]);
+            }
+            catch(e) {
+                console.log("problem with " + e + map._layers[i]);
+            }
+        }
+    }
 }
