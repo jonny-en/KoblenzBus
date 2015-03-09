@@ -878,6 +878,10 @@ function loadMap(index){ //index der Route die dargestellt werden soll
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ',
       id: 'examples.map-i875mjb7'
     }).addTo(map);
+
+ 
+
+    var markerGeo = L.marker(new L.LatLng(50.3533278, 7.5943951), {icon: geoIcon}).addTo(map);
   }
   localforage.getItem("routes",function(err, value){ 
     if (err){
