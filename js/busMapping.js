@@ -405,7 +405,7 @@ function htmlToData(resultLinks){
 
   console.log("route"+routeNumber+" : "+JSON.stringify(routesObject) + "\n\n"); //JSON Object log
   if (relevantRoutes.indexOf(routesObject)===-1){
-    console.log("added Route");
+    //console.log("added Route");
     relevantRoutes.push(routesObject);
   } else{
     console.log("Route already in array");
@@ -637,7 +637,7 @@ function buildCoordinatesList(elements,stopNames,townName,routeNr){
       console.log("Busline not found: "+routeNr+ " in " + townName); // auf Linien wie 3/13 anpassen
     }
   }
-  console.log("StopName: "+stopNames[0]);
+  //console.log("StopName: "+stopNames[0]);
   var isRegisteredInRoute = false;
   for (var i=0; i<elements.length;i++){ 
     if(elements[i].tags !=null){
