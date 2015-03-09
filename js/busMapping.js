@@ -880,14 +880,13 @@ function loadMap(index){ //index der Route die dargestellt werden soll
       for (var a=0; a<obj.route.length;a++){
         for (var b=0; b<obj.route[a].stops.length; b++){
           console.log("Stop: "+JSON.stringify(obj.route[a].stops[b]));
+          console.log("Length: "+JSON.stringify(obj.route[a].stops[b].coordinates.length));
           if (obj.route[a].stops[b].coordinates.length>0){
             console.log("Got Coords");
-            if ((obj.route[a].stops[b].coordinates[0].lon != null) && (obj.route[0].stops[0].coordinates[0].lon != "")){
             lon=obj.route[a].stops[b].coordinates[0].lon;
             lat=obj.route[a].stops[b].coordinates[0].lat;
             break outer;
             }
-          }
           
         }
       }
