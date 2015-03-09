@@ -879,11 +879,15 @@ function loadMap(index){ //index der Route die dargestellt werden soll
     map = L.map('map');
 
 
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
       maxZoom: 18,
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ',
       id: 'examples.map-i875mjb7'
     }).addTo(map);
+
+ 
+
+    var markerGeo = L.marker(new L.LatLng(50.3533278, 7.5943951), {icon: geoIcon}).addTo(map);
   }
   localforage.getItem("routes",function(err, value){ 
     if (err){
