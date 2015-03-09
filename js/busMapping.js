@@ -820,6 +820,7 @@ function storeInOverpassData(town, date, elements) {
 
 //Schritt 4 - verarbeite Daten 
 
+<<<<<<< HEAD
 function processData() {
     //------------- PLACEHOLDER --------------------
     if (tracker.error === true) {
@@ -847,6 +848,38 @@ function processData() {
                 }
 
             }
+=======
+function processData(){
+  //------------- PLACEHOLDER --------------------
+  if (tracker.error===true){
+          tracker.running=false;
+          return;
+  }
+  // TODO work work work
+	localforage.getItem("routes",function(err, value){ 
+    if (err){
+      console.log ("Couldnt load routes");
+    } else{
+      var minimum;
+      var minimumLength;
+      var index=0;
+      for (var i=0; i<value.length; i++){
+        if (i===0){
+          minimum=value[i].route[value[i].route.length-1].times[1];
+          minimumLength=value[i].route.length;
+        } else {
+          // 23:00 -> 0 -> 1 Uhr Problem
+          //Ansonsten funktioniert Direktvergleich von String
+          if (minimum>value[i].route[value[i].route.length-1].times[1]){
+            index=i;
+            minimum=value[i].route[value[i].route.length-1].times[1];
+          }
+          if (minimum===value[i].route[value[i].route.length-1].times[1] && minimumLength>value[i].route.length){
+            index=i;
+            minimumLength=value[i].route.length;
+            minimum=value[i].route[value[i].route.length-1].times[1];
+          }
+>>>>>>> origin/master
         }
 
         console.log("DRAW: " + index);
