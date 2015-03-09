@@ -614,6 +614,7 @@ function getLongLat(stopNames, townNames, routeNr){ //Läd wenn notwendig Koordi
 //Helper
 
 function buildCoordinatesList(elements,stopNames,townName,routeNr){
+  
   var coordinatesList = []; //Hole nur Koordinaten
   var route=null;
   loop:
@@ -635,21 +636,21 @@ function buildCoordinatesList(elements,stopNames,townName,routeNr){
       console.log("Busline not found: "+routeNr+ " in " + townName); // auf Linien wie 3/13 anpassen
     }
   }
-
+  console.log("StopName: "+stopNames[0]);
+  var isRegisteredInRoute = false;
   for (var i=0; i<elements.length;i++){ 
     if(elements[i].tags !=null){
       if (elements[i].tags.name != null){ // Bricht sonst ohne Fehlermeldung ab
         if(elements[i].tags.name.indexOf(stopNames[0]) > -1){   // TEST AUF NUR ERSTE WAHL STOP NAME (MUSS BEI MEHR ALTERNATIVEN GEFIXED WERDEN)
+          console.log("found Stop: "+JSON.stringify(elements[i]));
           if ((elements[i].lon != null) && (elements[i].lat != null)){
-              if (route==null){ // Keine passenede Route -> nimm alle Koordinaten
-                var coordinates=new Object();
-                coordinates.lon=elements[i].lon;
-                coordinates.lat=elements[i].lat;
-                //console.log(stopNames[0]+" -> "+elements[i].tags.name+ "\n");
-                coordinatesList.push(coordinates);
-              } else{ //Ansonsten filtere
+              if (route!=null){ // filtere
                     for (var n=0; n<route.members.length; n++){
                       if (route.members[n].ref===elements[i].id){
+                        if (!isRegisteredInRoute){
+                          coordinatesList=[];
+                          isRegisteredInRoute=true;
+                        }
                         var coordinates=new Object();
                         coordinates.lon=elements[i].lon;
                         coordinates.lat=elements[i].lat;
@@ -658,11 +659,20 @@ function buildCoordinatesList(elements,stopNames,townName,routeNr){
                       }
                     }
                 }
+                if (!isRegisteredInRoute){
+                  var coordinates=new Object();
+                  coordinates.lon=elements[i].lon;
+                  coordinates.lat=elements[i].lat;
+                  //console.log(stopNames[0]+" -> "+elements[i].tags.name+ "\n");
+                  coordinatesList.push(coordinates);
+                  console.log("Adding Coordinates: "+JSON.stringify(coordinatesList));
+                }
               }       
           }       
         }
       }
     }
+  console.log("Coordinates: "+JSON.stringify(coordinatesList));
   return coordinatesList;
 }
 
@@ -879,10 +889,7 @@ function loadMap(index){ //index der Route die dargestellt werden soll
       outer:
       for (var a=0; a<obj.route.length;a++){
         for (var b=0; b<obj.route[a].stops.length; b++){
-          console.log("Stop: "+JSON.stringify(obj.route[a].stops[b]));
-          console.log("Length: "+JSON.stringify(obj.route[a].stops[b].coordinates.length));
           if (obj.route[a].stops[b].coordinates.length>0){
-            console.log("Got Coords");
             lon=obj.route[a].stops[b].coordinates[0].lon;
             lat=obj.route[a].stops[b].coordinates[0].lat;
             break outer;
