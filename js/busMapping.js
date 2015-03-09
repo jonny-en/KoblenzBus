@@ -879,11 +879,16 @@ function loadMap(index){ //index der Route die dargestellt werden soll
       outer:
       for (var a=0; a<obj.route.length;a++){
         for (var b=0; b<obj.route[a].stops.length; b++){
-          if ((obj.route[a].stops[b].coordinates[0].lon != null) && (obj.route[0].stops[0].coordinates[0].lon != "")){
+          console.log("Stop: "+JSON.stringify(obj.route[a].stops[b]));
+          if (obj.route[a].stops[b].coordinates.length>0){
+            console.log("Got Coords");
+            if ((obj.route[a].stops[b].coordinates[0].lon != null) && (obj.route[0].stops[0].coordinates[0].lon != "")){
             lon=obj.route[a].stops[b].coordinates[0].lon;
             lat=obj.route[a].stops[b].coordinates[0].lat;
             break outer;
+            }
           }
+          
         }
       }
       
@@ -895,6 +900,7 @@ function loadMap(index){ //index der Route die dargestellt werden soll
       clearMap();
       map.setView(new L.LatLng(lat,lon),14);
       for (var i=0;i<obj.route.length;i++){
+        var color = getRandomColor();
         //Finde Stadt in der die Route läuft
         var filteredStop= filterDistricts(obj.route[i].stops[0].name); 
         var townNames = getTownNames(filteredStop); //Unperformant!!! verbessern
@@ -937,7 +943,7 @@ function loadMap(index){ //index der Route die dargestellt werden soll
                               }
                             }
                             
-                            var polyline=L.polyline(wayCoordinates).addTo(map);
+                            var polyline=L.polyline(wayCoordinates, {color: color}).addTo(map);
                             break;
                           } else if (overpassRoutes[n].elements[q].id>ref){
                             break;
@@ -984,4 +990,10 @@ function clearMap() {
             }
         }
     }
+}
+
+function getRandomColor() {
+    var colors = ["#990000","#CC0000","#FF0000","#FFFF00","#FFCC00","#FFFF33","#006600","#009900","#00CC00","#00FF00","#00CCCC","#003399","#0033FF","00CCFF","#0099FF","#00FFFF","#0000FF","#660099","#9900CC","#990066","#CC0099","#FF0099","FF00FF"];
+    var color = colors[Math.round(Math.random() * colors.length)];
+return color;
 }
