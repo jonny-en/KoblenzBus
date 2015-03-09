@@ -1,4 +1,13 @@
 var map;
+
+var GeoIcon = L.Icon.Default.extend({
+    options: {
+        iconUrl: 'js/libs/images/bus-icon.png'
+    }
+});
+
+var geoIcon = new GeoIcon();
+
 $(document).ready(function() {
 
 
@@ -8,13 +17,7 @@ $(document).ready(function() {
 
 });
 
-var GeoIcon = L.Icon.Default.extend({
-    options: {
-        iconUrl: 'js/libs/images/bus-icon.png'
-    }
-});
 
-var geoIcon = new GeoIcon();
 
 function onLocationFound(e) {
     var radius = e.accuracy / 2;
