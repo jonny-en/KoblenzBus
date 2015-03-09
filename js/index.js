@@ -71,13 +71,6 @@ function checkMap(){
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ',
         id: 'examples.map-i875mjb7'
       }).addTo(map);
-
-    map.locate({setView: true, maxZoom: 16});
-
-    map.on('locationfound', onLocationFound);
-
-    
+      map.setView(new L.LatLng(50.3533278, 7.5943951), 14);
     }
-
-   
 }
