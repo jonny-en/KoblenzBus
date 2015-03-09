@@ -9,6 +9,7 @@ var overpassStops; // Speichert alle Bushaltestellen, getaggt mit name und datum
 var overpassRoutes; // Analog mit Routen
 var stopDescriptionList; //Nodes die in Start/Stop angezeigt werden mit verknüpften Daten
 var relevantRoutes;
+var markers=[];
 
 var overpassNodes;
 
@@ -642,7 +643,7 @@ function buildCoordinatesList(elements,stopNames,townName,routeNr){
     if(elements[i].tags !=null){
       if (elements[i].tags.name != null){ // Bricht sonst ohne Fehlermeldung ab
         if(elements[i].tags.name.indexOf(stopNames[0]) > -1){   // TEST AUF NUR ERSTE WAHL STOP NAME (MUSS BEI MEHR ALTERNATIVEN GEFIXED WERDEN)
-          console.log("found Stop: "+JSON.stringify(elements[i]));
+          //console.log("found Stop: "+JSON.stringify(elements[i]));
           if ((elements[i].lon != null) && (elements[i].lat != null)){
               if (route!=null){ // filtere
                     for (var n=0; n<route.members.length; n++){
@@ -665,14 +666,14 @@ function buildCoordinatesList(elements,stopNames,townName,routeNr){
                   coordinates.lat=elements[i].lat;
                   //console.log(stopNames[0]+" -> "+elements[i].tags.name+ "\n");
                   coordinatesList.push(coordinates);
-                  console.log("Adding Coordinates: "+JSON.stringify(coordinatesList));
+                  //console.log("Adding Coordinates: "+JSON.stringify(coordinatesList));
                 }
               }       
           }       
         }
       }
     }
-  console.log("Coordinates: "+JSON.stringify(coordinatesList));
+  //console.log("Coordinates: "+JSON.stringify(coordinatesList));
   return coordinatesList;
 }
 
@@ -977,6 +978,7 @@ function loadMap(index){ //index der Route die dargestellt werden soll
             var lon=obj.route[i].stops[j].coordinates[k].lon;
             var lat=obj.route[i].stops[j].coordinates[k].lat;
             var marker = L.marker([lat,lon]).addTo(map);
+            markers.push(marker);
           }
         }
       }
@@ -986,6 +988,10 @@ function loadMap(index){ //index der Route die dargestellt werden soll
 }
 
 function clearMap() {
+    for (var n=0; n<markers.length; n++){
+      map.removeLayer(markers[n]);
+    }
+    markers=[];
     for(i in map._layers) {
         if(map._layers[i]._path != undefined) {
             try {
