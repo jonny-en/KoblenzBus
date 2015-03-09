@@ -72,21 +72,12 @@ function checkMap(){
         id: 'examples.map-i875mjb7'
       }).addTo(map);
 
-      var pos = new L.LatLng(50.3533278, 7.5943951);
+    map.locate({setView: true, maxZoom: 16});
 
-      map.setView(pos, 14);
-      
-    var geoIcon = L.icon({
-        iconUrl: 'js/libs/images/bus-icon.png',
-        iconRetinaUrl: 'js/libs/images/bus-icon.png',
-        
-        
-        
-        shadowUrl: 'js/libs/images/marker-shadow.png',
-        shadowRetinaUrl: 'js/libs/images/marker-shadow.png',
-        
-    });
+    map.on('locationfound', onLocationFound);
 
-    var markerGeo = L.marker(new L.LatLng(50.3533278, 7.5943951), {icon: geoIcon}).addTo(map);
+    
     }
+
+   
 }
