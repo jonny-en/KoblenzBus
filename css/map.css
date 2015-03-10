@@ -35,12 +35,14 @@
 	float:left;
 }
 
-.slideupHeader .exit{
+.slideupHeader #exit{
 	float:right;
 	width: 80px;
 	padding-right: 50px;
+	cursor: pointer; 
+	cursor: hand;
 }
-.slideupHeader .exit .divide
+.slideupHeader #exit .divide
 {
 	float:left;
 	height: 42px;
@@ -51,7 +53,7 @@
 	margin-bottom: 4px;
 }
 
-.slideupHeader .exit .fertig{
+.slideupHeader #exit .fertig{
 	float:left;
 	font-size: 16px;
 	margin-left: 23px;
