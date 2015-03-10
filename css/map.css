@@ -13,6 +13,9 @@
 	margin: 0;
 	display: none;
 	border-top: solid black 2px;
+	color: white;
+	font-size: 16px;
+
 }
 
 .slideActive {
@@ -25,22 +28,29 @@
 	width: 100%;
 	border-top: 2px solid rgba(255,255,255,0.3);
 	border-bottom: 2px solid black;
-	font-size: 22px;
-	color: white;
-	padding-left: 35px;
 	line-height: 50px;
+	text-align: center;
+}
+
+.slideupHeader table{
+	width: 100%
 }
 
 .slideupHeader .stopName{
-	float:left;
+	font-size: 22px;
+	text-align: center;
+}
+
+.slideupHeader .stopName span{
+	margin-left: -24px;
 }
 
 .slideupHeader #exit{
-	float:right;
 	width: 80px;
-	padding-right: 50px;
 	cursor: pointer; 
 	cursor: hand;
+	height: 50px;
+	text-align: center;
 }
 .slideupHeader #exit .divide
 {
@@ -55,18 +65,42 @@
 
 .slideupHeader #exit .fertig{
 	float:left;
-	font-size: 16px;
-	margin-left: 23px;
+	margin-left: 17px;
 	line-height: 50px;
 }
 
 .slideupCenter{
+	margin: 0 auto;
 	height: 150px;
 	width: 100%;
 	background-color: rgba(0,0,0,0.5);
 	border-top: 2px solid rgba(255,255,255,0.3);
 	border-bottom: 2px solid rgba(255,255,255,0.3);
+	text-align: center;
 
+}
+
+.slideupCenter .linenumber{
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 22px;
+	margin-top: 16px;
+	margin-left: -208px;
+}
+
+.slideupCenter .direction{
+	margin-left: -202px;
+}
+
+.slideupCenter table{
+	margin: 0 auto;
+	width: 280px;
+	font-size: 22px;
+	text-align: left;
+}
+
+.slideupCenter table .right{
+	text-align: right;
 }
 
 #settings {

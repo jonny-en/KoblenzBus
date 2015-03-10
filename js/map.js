@@ -16,9 +16,11 @@ $(document).ready(function() {
         param: 'settings_view'
     }, showView);
 
+
     $("#exit").click(function(){
         slideUp.slideUp('300');}
     );
+
 
 });
 
