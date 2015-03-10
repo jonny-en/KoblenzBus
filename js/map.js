@@ -8,6 +8,7 @@ var geoIcon = new GeoIcon();
 var geoLocation;
 var slideUp = $('#slideup');
 
+
 $(document).ready(function() {
 
 
@@ -35,7 +36,8 @@ function onLocationError(e) {
 
 
 function onMarkerClick() {
-    slideUp.slideToggle(400);
+    
+    slideUp.slideToggle('slow');
     slideUp.toggleClass('slideActive');
     if (!(slideUp.hasClass('slideActive'))) {
         map.panTo(this.getLatLng())
@@ -48,7 +50,7 @@ function onMarkerClick() {
 function onMapClick(e) {
     
     if(slideUp.hasClass('slideActive')){
-        slideUp.slideToggle(400);
+        slideUp.slideToggle('slow');
         slideUp.toggleClass('slideActive');
     }
 }
