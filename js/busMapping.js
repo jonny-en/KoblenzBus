@@ -883,6 +883,8 @@ function loadMap(index) { //index der Route die dargestellt werden soll
 
         map.locate();
         map.on('locationfound', onLocationFound);
+        map.on('locationerror', onLocationError);
+        map.on('click', onMapClick);
 
 
     }
@@ -986,7 +988,7 @@ function loadMap(index) { //index der Route die dargestellt werden soll
                     for (var k = 0; k < obj.route[i].stops[j].coordinates.length; k++) {
                         var lon = obj.route[i].stops[j].coordinates[k].lon;
                         var lat = obj.route[i].stops[j].coordinates[k].lat;
-                        var marker = L.marker([lat, lon]).addTo(map);
+                        var marker = L.marker([lat, lon]).addTo(map).on('click',onMarkerClick);
                         markers.push(marker);
                     }
                 }

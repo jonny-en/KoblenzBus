@@ -75,6 +75,8 @@ function checkMap(){
     map.locate({setView: true, maxZoom: 16});
 
     map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+    map.on('click', onMapClick);
 
     
     }

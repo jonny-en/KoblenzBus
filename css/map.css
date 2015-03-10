@@ -6,11 +6,12 @@
 
 #slideup {
 	background-color: black;
-	height: 200px;
+	height: 60%;
 	width: 100%;
 	bottom: 45px;
 	position: fixed;
 	margin: 0;
+	opacity: 0.9;
 	display: none;
 
 
@@ -18,7 +19,6 @@
 
 .slideActive {
 	bottom: 45px;
-	transition: 1s;
 }
 
 
