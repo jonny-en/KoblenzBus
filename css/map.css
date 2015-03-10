@@ -5,22 +5,42 @@
 }
 
 #slideup {
-	background-color: black;
-	height: 60%;
+	background-color: rgba(0,0,0,0.75);
+	height: 265px;
 	width: 100%;
 	bottom: 45px;
 	position: fixed;
 	margin: 0;
-	opacity: 0.9;
 	display: none;
-
-
+	border-top: solid black 2px;
 }
 
 .slideActive {
 	bottom: 45px;
 }
 
+.slideupHeader
+{
+	height: 50px;
+	width: 100%;
+	border-top: 2px solid rgba(255,255,255,0.3);
+	border-bottom: 2px solid black;
+	font-size: 22px;
+	color: white;
+	padding-left: 35px;
+	line-height: 50px;
+}
+
+
+
+.slideupCenter{
+	height: 150px;
+	width: 100%;
+	background-color: rgba(0,0,0,0.5);
+	border-top: 2px solid rgba(255,255,255,0.3);
+	border-bottom: 2px solid rgba(255,255,255,0.3);
+
+}
 
 #settings {
 	position: absolute;
