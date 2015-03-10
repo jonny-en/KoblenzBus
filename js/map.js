@@ -7,7 +7,7 @@ var GeoIcon = L.Icon.Default.extend({
 var geoIcon = new GeoIcon();
 var geoLocation;
 var slideUp = $('#slideup');
-
+var point = new L.point([0,150]);
 
 $(document).ready(function() {
 
@@ -25,7 +25,7 @@ function onLocationFound(e) {
     geoLocation = e.latlng;
     var markerGeo = L.marker(geoLocation, {
         icon: geoIcon
-    }).addTo(map).on('click', onMarkerClick);
+    }).addTo(map);
     L.circle(geoLocation, radius).addTo(map);
 }
 
@@ -37,12 +37,14 @@ function onLocationError(e) {
 
 function onMarkerClick() {
     
-    slideUp.slideToggle('slow');
+    slideUp.slideToggle('300');
     slideUp.toggleClass('slideActive');
     if (!(slideUp.hasClass('slideActive'))) {
-        map.panTo(this.getLatLng())
+        map.panBy(point);
+        point = point.multiplyBy(-1);
     } else {
-    	map.panTo([this.getLatLng().lat - 0.007, this.getLatLng().lng])
+        map.panBy(point);
+        point = point.multiplyBy(-1);
     }
 }
 
@@ -50,8 +52,10 @@ function onMarkerClick() {
 function onMapClick(e) {
     
     if(slideUp.hasClass('slideActive')){
-        slideUp.slideToggle('slow');
+        slideUp.slideToggle('300');
         slideUp.toggleClass('slideActive');
+        map.panBy(point);
+        point = point.multiplyBy(-1);
     }
 }
 
