@@ -17,7 +17,7 @@ $(document).ready(function() {
     }, showView);
 
     $("#exit").click(function(){
-        slideUp.slideToggle('300');}
+        slideUp.slideUp('300');}
     );
 
 });
@@ -42,7 +42,7 @@ function onLocationError(e) {
 
 function onMarkerClick() {
     
-    slideUp.slideToggle('300');
+    slideUp.slideDown('300');
     slideUp.toggleClass('slideActive');
    
 }
@@ -51,7 +51,7 @@ function onMarkerClick() {
 function onMapClick(e) {
     
     if(slideUp.hasClass('slideActive')){
-        slideUp.slideToggle('300');
+        slideUp.slideUp('300');
         slideUp.toggleClass('slideActive');
     
     }
