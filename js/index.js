@@ -1,14 +1,14 @@
 $(document).ready(function() {
     //preload all views
-	$("#routeEdit_view").load("../routeEdit.html");
-    $("#route_view").load("../route.html");
-    $("#map_view").load("../map.html");
-    $("#date_view").load("../date.html");
-    $("#routeAdd_view").load("../routeAdd.html");
-    $("#routeEdit_view").load("../routeEdit.html");
-	$("#settings_view").load("../settings.html");
-	$("#chooseIcon_view").load("../chooseIcon.html");
-    $("#stopSelection_view").load("../stopSelection.html");
+	$("#routeEdit_view").load("./routeEdit.html");
+    $("#route_view").load("./route.html");
+    $("#map_view").load("./map.html");
+    $("#date_view").load("./date.html");
+    $("#routeAdd_view").load("./routeAdd.html");
+    $("#routeEdit_view").load("./routeEdit.html");
+	$("#settings_view").load("./settings.html");
+	$("#chooseIcon_view").load("./chooseIcon.html");
+    $("#stopSelection_view").load("./stopSelection.html");
 
 
     //Start Navi
