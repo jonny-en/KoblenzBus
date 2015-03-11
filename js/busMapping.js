@@ -880,10 +880,9 @@ function loadMap(index) { //index der Route die dargestellt werden soll
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ',
             id: 'examples.map-i875mjb7'
         }).addTo(map);
-
-        map.locate();
+map.locate();
         map.on('locationfound', onLocationFound);
-        map.on('locationerror', onLocationError);
+    map.on('locationerror', onLocationError);
         map.on('click', onMapClick);
 
 

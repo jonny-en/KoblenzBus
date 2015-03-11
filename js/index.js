@@ -63,8 +63,10 @@ function showView(event) {
 
 function checkMap(){
     if (map==null){
-        map = L.map('map');
-
+        map = L.map('map', {
+    center: [50.3643368, 7.5601237],
+    zoom: 16
+});
 
       L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
         maxZoom: 18,
@@ -72,9 +74,9 @@ function checkMap(){
         id: 'examples.map-i875mjb7'
       }).addTo(map);
 
-    map.locate({setView: true, maxZoom: 16});
-
-    map.on('locationfound', onLocationFound);
+map.locate();
+   
+ map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
     map.on('click', onMapClick);
 

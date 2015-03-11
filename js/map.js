@@ -29,11 +29,12 @@ $(document).ready(function() {
 function onLocationFound(e) {
     var radius = e.accuracy / 2;
     geoLocation = e.latlng;
-    var markerGeo = L.marker(geoLocation, {
+    var markerGeo = L.marker([50.3643368, 7.5601237], {
         icon: geoIcon
     }).addTo(map);
     markerGeo.bindPopup('Du bist hier!');
-    L.circle(geoLocation, radius).addTo(map);
+    L.circle([50.3643368, 7.5601237], radius).addTo(map);
+
 }
 
 function onLocationError(e) {
@@ -42,12 +43,14 @@ function onLocationError(e) {
 
 
 
-function onMarkerClick() {
+function onMarkerClick(e) {
     
     slideUp.slideDown('300');
     slideUp.toggleClass('slideActive');
+
    
 }
+
 
 
 function onMapClick(e) {
