@@ -388,7 +388,15 @@ function htmlToData(resultLinks) {
     var parser = new DOMParser();
     var htmlLinks = parser.parseFromString(resultLinks, "text/html");
 
-    var stopAndTimeTags = htmlLinks.getElementsByClassName("stationDark"); //Alle Tags mit Bus
+
+    var stopAndTimeTags = [htmlLinks.getElementsByClassName("routeStart")[0]];
+    var changeStops = htmlLinks.getElementsByClassName("routeChange");
+    for (var i=0; i < changeStops.length; i++){
+        stopAndTimeTags.push(changeStops[i]);
+    }
+    stopAndTimeTags.push(htmlLinks.getElementsByClassName("routeEnd")[0]);
+
+    console.log(stopAndTimeTags)
     var busNrTags = htmlLinks.getElementsByClassName("mot");
 
     var busNr = [];
@@ -424,6 +432,12 @@ function htmlToData(resultLinks) {
 function filterBusNr(busNr, busNrTags) {
     for (var n = 0; n < busNrTags.length; n++) {
         var temp = trim(busNrTags.item(n).textContent);
+        if (temp.indexOf(" Umstiegszeit") > -1) {
+            continue;
+        }
+        if (temp.indexOf("Min.") > -1) {
+            continue;
+        }
         if (temp.indexOf("Bus ") > -1) {
             temp = trim(temp.substring(4, temp.length));
         }
@@ -436,7 +450,7 @@ function filterBusNr(busNr, busNrTags) {
 
 function filterStopAndTimes(stopAndTimeTags, stops, times) { //MEMO: javascript verändert direkt den Variablenwert von stops/times
     for (var k = 0; k < stopAndTimeTags.length; k++) { //Entferne Formatierungen aus Haltestelle und Zeiten, Sortiere
-        var stopAndTime = stopAndTimeTags.item(k).textContent.split("\n").filter(function(n) {
+        var stopAndTime = stopAndTimeTags[k].textContent.split("\n").filter(function(n) {
             return n != ""
         });
         for (var l = 0; l < stopAndTime.length; l++) {
@@ -446,17 +460,23 @@ function filterStopAndTimes(stopAndTimeTags, stops, times) { //MEMO: javascript 
             } else if (temp.indexOf(" Min.") > -1) {
                 times.push(temp);
                 times.push("undefined (Fußweg)"); //Filler, sodass man immer Zahlenpaar abfragen kann
-            } else {
+            } else if (stops[stops.length-1] != temp) {
                 stops.push(temp);
             }
         }
 
     }
+
 }
 
 //Schritt 3.1: Baue das Routen-Objekt
 function buildRouteObject(busNr, stops, times, routesObject) {
     var coordinatesContainer = [];
+
+    console.log(busNr); // LOGS - REMOVE
+    console.log(stops); // LOGS - REMOVE
+    console.log(times); // LOGS - REMOVE
+
     for (var i = 0; i < busNr.length; i++) {
 
         var filteredStop0 = filterDistricts(stops[i]);
