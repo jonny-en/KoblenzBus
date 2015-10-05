@@ -8,6 +8,6 @@ $(document).ready(function(){
 	// an empty list gets assigned to the favoritelist in localforage
 	$("#clearbtn").click(function(){
 		localforage.setItem("favList",[],function(err){});
-		$("#route_view").load("../route.html");
+		location.reload();
 	});
 });
