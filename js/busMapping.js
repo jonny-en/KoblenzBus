@@ -223,7 +223,7 @@ function requestLinks(result, start, startindex, destination, destinationindex) 
             tracker.error = true;
             switchViewTo("stopSelection_view");
             $("#stops").empty();
-            $("#stops").append('<li><h1>Haltestelle "' + start.stopname[startindex] + '" war nicht eindeutig.</h1></li>');
+            $("#stops").append('<li><h1>Die Haltestelle "' + start.stopname[startindex] + '" ist nicht eindeutig. Bitte wählen sie eine Alternative.</h1></li>');
             for (var n = 0; n < 5; n++) {
                 $("#stops").append("<li><button id='btn" + n + "''>" + startOptions[n] + "</button></li>");
                 $("#btn" + n).click(function() {
