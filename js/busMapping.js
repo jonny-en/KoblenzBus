@@ -947,6 +947,7 @@ function loadMap(index) { //index der Route die dargestellt werden soll
                             if (overpassRoutes[n].elements[m].tags != null) {
                                 if (overpassRoutes[n].elements[m].tags.ref === obj.route[i].routeName) {
                                     //Route gefunden
+                                    console.log("found Route: "+obj.route[i].routeName);
                                     for (var r = 0; r < overpassRoutes[n].elements[m].members.length; r++) {
                                         if (overpassRoutes[n].elements[m].members[r].type === "way") {
                                             var ref = overpassRoutes[n].elements[m].members[r].ref;
@@ -1008,10 +1009,50 @@ function loadMap(index) { //index der Route die dargestellt werden soll
                     for (var k = 0; k < obj.route[i].stops[j].coordinates.length; k++) {
                         var lon = obj.route[i].stops[j].coordinates[k].lon;
                         var lat = obj.route[i].stops[j].coordinates[k].lat;
-                        var marker = L.marker([lat, lon]).addTo(map).on('click',onMarkerClick);
+                        if (j==0){
+                            marker_already_set=-1;
+                            for (var marker_index = 0; marker_index < markers.length; marker_index++){
+                                if (markers[marker_index]._latlng.lat==lat && markers[marker_index]._latlng.lng==lon){
+                                    marker_already_set=marker_index;
+                                }
+                            }
+                            if (marker_already_set>-1) {
+                                var marker = markers[marker_already_set];
+                                marker.options.line= marker.options.line +' auf '+obj.route[i].routeName;
+                                marker.options.time2= obj.route[i].times[0];
+                                for (var marker_index = 0; marker_index < markers.length; marker_index++){
+
+                                    if (markers[marker_index].options.stopName==marker.options.stopName){
+                                        markers.splice(marker_index,1);
+                                        marker_index--;
+                                    }
+                                }
+                                j++;
+                                k=0;
+                            }else {
+                                var marker = L.marker([lat, lon],{
+                                stopName: obj.route[i].stops[j].name,
+                                line: obj.route[i].routeName,
+                                time1: '---',
+                                time2: obj.route[i].times[0]
+                                });
+                            }
+                            
+                        } else{
+                            var marker = L.marker([lat, lon],{
+                            stopName: obj.route[i].stops[j].name,
+                            line: obj.route[i].routeName,
+                            time1: obj.route[i].times[1],
+                            time2: '---'
+                            });
+                        }
                         markers.push(marker);
                     }
                 }
+            }
+            console.log(markers);
+            for (var mark = 0; mark < markers.length; mark++) {
+                            markers[mark]=markers[mark].addTo(map).on('click',onMarkerClick);
             }
         }
     });

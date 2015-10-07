@@ -43,7 +43,10 @@ function onLocationError(e) {
 
 
 function onMarkerClick() {
-    
+    $('#insert-stopname').text(this.options.stopName);
+    $('#insert-line').text('Linie '+ this.options.line);
+    $('#insert-times-in').html(this.options.time1);
+    $('#insert-times-out').html(this.options.time2);
     slideUp.slideDown('300');
     slideUp.toggleClass('slideActive');
    
